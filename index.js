@@ -10,6 +10,7 @@ window.addEventListener("load", async () => {
   //Load html templates here, for navigo
   
   const templateLogin = await loadHtml("./pages/login/login.html")
+  const templateHome = await loadHtml("./pages/home/home.html")
 
   const router = new Navigo("/",{hash:true});
   window.router = router
