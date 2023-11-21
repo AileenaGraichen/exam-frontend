@@ -53,7 +53,7 @@ async function fetchLocations(page = 0){
 }
 
 function displayData(locations){
-    const divObjects = locations.map(location => `<div><h2>${location.locationName}</h2><h4>${location.address}</h4></div>`).join('');
+    const divObjects = locations.map(location => `<div class="" ><h2>${location.locationName}</h2><h4>${location.address}</h4></div>`).join('');
     document.getElementById("location-flexbox").innerHTML = divObjects;
 }
 
