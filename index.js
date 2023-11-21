@@ -6,13 +6,14 @@ import {setActiveLink, renderHtml, loadHtml} from "./utils.js"
 
 //Add Init methods here
 import {initLogin} from "./pages/login/login.js";
+import { initLocations } from "./pages/location/location.js";
 
 
 window.addEventListener("load", async () => {
 
   //Load html templates here, for navigo
-  const templateBooks = await loadHtml("./pages/login/login.html")
-
+  const templateLocations = await loadHtml("./pages/location/location.html")
+  const templateHome = await loadHtml("./pages/home/home.html")
 
   const router = new Navigo("/",{hash:true});
   window.router = router
@@ -28,19 +29,10 @@ window.addEventListener("load", async () => {
         "/": () => 
         renderHtml(templateHome, "content"),
 
-        "/books": (match) => {
-          renderHtml(templateBooks, "content")
-          initLogin()
+        "/location": () => {
+          renderHtml(templateLocations, "content")
+          initLocations()
         },
-
-        "/books-no-pagination": (match) => {
-          renderHtml(templateBooksNoPagination, "content")
-          initBooksNoPagination()
-        },
-        
-        "/grid": (match) => {
-          renderHtml(templateGrid, "content");
-        }
       })
       .notFound(() => document.getElementById("content").innerHTML ="<h2>404 - Page not found</h2>")
       .resolve()

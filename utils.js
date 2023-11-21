@@ -82,3 +82,20 @@ export function sanitizeStringWithTableRows(tableRows) {
   secureRows = secureRows.replace("<table>", "").replace("</table>", "")
   return secureRows
 }
+
+export function makeOptions(method, body, addToken) {
+  const opts = {
+    method: method,
+    headers: {
+      "Content-type": "application/json",
+      "Accept": "application/json"
+    }
+  }
+  if (body) {
+    opts.body = JSON.stringify(body);
+  }
+   if (addToken && localStorage.getItem("token")) {
+    opts.headers.Authorization = "Bearer " + localStorage.getItem("token")
+  }
+  return opts;
+}
