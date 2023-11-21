@@ -1,34 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PartnerØ</title>
-    <link rel="icon" href="/images/faviconxp.png" type="image/x-icon" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="canonical"
-      href="https://getbootstrap.com/docs/5.0/components/navbar/"
-    />
-    <link rel="stylesheet" href="styles/style.css" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="static/styles/images/Logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="static/styles/styles.css">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/components/navbar/">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
-  </head>
-  <body>
-    <h1>PartnerØ: S9uared</h1>
-    <h3>This is the deployed frontend</h3>
-    <div class="content"></div>
-    <a class="admin-only" href="/manage/accounts" data-navigo>accounts</a>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>PartnerØ</title>
+</head>
+<body>  
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="font-size: larger;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/" data-navigo>
+                <img src="static/styles/images/Logo.png" alt="PartnerOE" style="width: 150px; height: auto;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul id="menu" class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/login" data-navigo>Login</a>
+                    </li>
+                </ul> 
+            </div>
+        </div>
+    </nav>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+    <!-- Collapsible content -->
+    <div class="collapse" id="navbarContent"> <!-- Added a collapse div -->
+        <div class="bg-dark p-4">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- The rest of your content -->
+    <div class="content" id="content" style="margin: 5%; margin-top: 3%;">
+    </div>
+    
+    <!-- Your existing scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <script src="index.js" type="module"></script>
+</body>
 </html>
