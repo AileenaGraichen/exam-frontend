@@ -23,8 +23,9 @@ html {
 }
 
 .location-box{
-    float:left;
-    width:30vw;
-    height:200px;
-    border: 1px solid black;
+    display: flex;
+    background-color: var(--complementary-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border: var(--border);
 }
