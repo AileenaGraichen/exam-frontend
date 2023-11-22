@@ -7,6 +7,7 @@ import {
 } from "../../utils.js";
 
 export async function initManageAccounts() {
+  console.log("hello");
   renderAccounts();
   document
     .getElementById("create-account-btn")
@@ -14,8 +15,6 @@ export async function initManageAccounts() {
   document
     .getElementById("tbl-body")
     .addEventListener("onclick", showAccountDetails);
-  // Get the modal
-  document.getElementById("account-modal").addEventListener("click", () => {});
 }
 
 async function renderAccounts() {
@@ -46,7 +45,7 @@ async function renderAccounts() {
     accountIds.forEach((id) => {
       document
         .getElementById("account-btn_manage_" + id)
-        .addEventListener("click", showDetailsModal(id));
+        .addEventListener("click", manageAccounts);
     });
   } catch (err) {
     //TODO Handle errors correctly
@@ -91,20 +90,6 @@ async function addRoleToAccount(username) {
   }
 }
 
-async function showAccountDetails(evt) {
-  const target = evt.target;
-  if (!target.id.startsWith("row-btn_")) {
-    return;
-  }
-
-  const parts = target.id.split("_");
-  const id = parts[2];
-  const btnAction = parts[1];
-  if (btnAction === "manage") {
-    showDetailsModal(id);
-  }
-}
-
 async function deleteAccount(evt) {
   try {
     await fetch(
@@ -117,29 +102,45 @@ async function deleteAccount(evt) {
   }
 }
 
-function showDetailsModal(id) {
-  document.getElementById("account-modal").style.display = "block";
+async function manageAccounts(evt) {
+  const clicked = evt.target;
+  if (!clicked.id.startsWith("account-btn_manage_")) {
+    return;
+  }
+
+  const parts = clicked.id.split("_");
+  const id = parts[2];
+  console.log(id);
+
+  try {
+    let user = await fetch(`${URL}/${id}`, makeOptions("GET", null, true)).then(
+      handleHttpErrors
+    );
+    const userDiv = `
+    <div>
+      <span class="close">&times;</span>
+      <label for="username_${user.userName}">Username</label>
+      <input class="account-input" id="username_${user.userName}" type="text" value="${user.userName}"></input>
+      <label for="email_${user.userName}">Email</label>
+      <input class="account-input" id="email_${user.userName}" type="text" value="${user.email}"></input>
+      <label for="password_${user.userName}">Password</label>
+      <input class="account-input" id="password_${user.userName}" type="text"></input>
+    </div>`;
+
+    document.querySelector("#account-modal .modal-content").innerHTML = userDiv;
+    document.getElementById("account-modal").style.display = "block";
+    let span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+      document.getElementById("account-modal").style.display = "none";
+    };
+  } catch (err) {
+    //TODO Handle errors correctly
+    console.error("Could not fetch user from server: " + err);
+  }
 }
 
-/* // Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on the button, open the modal
-btn.onclick = function () {
-  modal.style.display = "block";
-};
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function () {
-  modal.style.display = "none";
-};
-
-// When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
+  if (event.target == document.getElementById("account-modal")) {
+    document.getElementById("account-modal").style.display = "none";
   }
-}; */
+};
