@@ -8,6 +8,8 @@ let sortColumn = 'locationName';
 let sortDirection = 'asc';
 let queryString
 let isInitialized = false;
+export let clickedLocation;
+
 
 export function initLocations(){
     const page =  0
@@ -29,7 +31,6 @@ async function fetchLocations(page = 0){
     
             data = await fetch(`${URL}?size=100`, makeOptions("GET", null, false)).then(handleHttpErrors);
             displayData(data.content);  
-           
     
           } else {
             console.log("Desktop device detected");
@@ -39,15 +40,20 @@ async function fetchLocations(page = 0){
             displayData(data.content);
             displayPagination(data.totalPages, page);
           }
-
-
+          
+          setupLocationEventHandlers();
     } catch (error) {
         console.error(error);
     }
 }
 
 function displayData(locations){
-    const divObjects = locations.map(location => `<div class="location-box"><h2>${location.locationName}</h2><h4>${location.address}</h4></div>`).join('');
+    const divObjects = locations.map(location => 
+    `<div class="location-box" id="location_${location.id}" style="cursor:pointer";>
+    <h2 id="location_${location.id}">${location.locationName}</h2>
+    <h4 id="location_${location.id}">${location.address}</h4>
+    </div>`
+    ).join('');
     document.getElementById("location-flexbox").innerHTML = divObjects;
 }
 
@@ -82,7 +88,19 @@ function handlePaginationClick(evt) {
 }
 
 function setupLocationEventHandlers(){
-    
+    const locationBoxes = document.querySelectorAll(".location-box");
+    for (let i = 0; i < locationBoxes.length; i++) {
+        locationBoxes[i].addEventListener("click", (evt) => {
+            const target = evt.target;
+            if (!target.id.includes("location_")) {
+                return;
+            }
+            const id = target.id.replace("location_", "");
+            clickedLocation = id;
+            console.log(clickedLocation);
+            window.router.navigate("/unit")
+        })
+    } 
 }
 
 function isMobile() {
