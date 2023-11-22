@@ -1,52 +1,90 @@
 :root {
-    --heading: "Geneva", 900;
-    --sub-heading: "Helvetica", 700;
-    --text: "Helvetica", 400;
-    --background-color: rgb(145, 165, 226);
-    --complementary-color: rgb(190, 25, 190); /*boxes/elements*/
-    --primary-color: #38344E; /*text*/
-    --secondary-color: #EDA284; /*subtext*/
-    --off-color: rgb(25, 69, 135); /*accent-color(button)*/
-    --box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
-    --border: 1px solid rgba(255, 255, 255, 0.02);
-    --border-radius: 10px;
+  --heading: "Geneva", 900;
+  --sub-heading: "Helvetica", 700;
+  --text: "Helvetica", 400;
+  --background-color: rgb(145, 165, 226);
+  --complementary-color: rgb(190, 25, 190); /*boxes/elements*/
+  --primary-color: #38344e; /*text*/
+  --secondary-color: #eda284; /*subtext*/
+  --off-color: rgb(25, 69, 135); /*accent-color(button)*/
+  --box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+  --border: 1px solid rgba(255, 255, 255, 0.02);
+  --border-radius: 10px;
 }
 
 /* CSS Resets */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
-body{
-    background-color: var(--background-color);
+body {
+  background-color: var(--background-color);
 }
 
-h1{
-    color: var(--primary-color);
+h1 {
+  color: var(--primary-color);
 }
 
-.login-box{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    background-color: var(--complementary-color);
-    box-shadow: var(--box-shadow);
-    border: var(--border);
-    border-radius: var(--border-radius);
+.login-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  background-color: var(--complementary-color);
+  box-shadow: var(--box-shadow);
+  border: var(--border);
+  border-radius: var(--border-radius);
 }
 
-button{
-    color: var(--primary-color);
-    background-color: var(--off-color)
+button {
+  color: var(--primary-color);
+  background-color: var(--off-color);
 }
 
-label{
-    color: var(--secondary-color);
+label {
+  color: var(--secondary-color);
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: var(--background-color); /* Fallback color */
+  background-color: var(--background-color); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: var(--background-color);
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: var(--border);
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: var(--primary-color);
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: var(--secondary-color);
+  text-decoration: none;
+  cursor: pointer;
 }

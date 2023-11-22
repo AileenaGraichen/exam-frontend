@@ -1,5 +1,23 @@
 <div class="template">
-  <div id="accounts-outerbox"></div>
+  <div id="manage-account-content">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbl-body"></tbody>
+    </table>
+  </div>
+  <div id="account-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+    </div>
+  </div>
+
   <input type="text" id="create-username" placeholder="Username" />
   <input type="text" id="create-email" placeholder="Email" />
   <input type="text" id="create-password" placeholder="Password" />
