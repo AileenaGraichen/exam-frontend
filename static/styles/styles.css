@@ -21,3 +21,10 @@
 html {
     scroll-behavior: smooth;
 }
+
+.location-box{
+    float:left;
+    width:30vw;
+    height:200px;
+    border: 1px solid black;
+}
