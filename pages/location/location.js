@@ -22,7 +22,7 @@ export function initLocations(){
     fetchLocations(Number(page));
 }
 
-async function fetchLocations(page = 0){
+/*async function fetchLocations(page = 0){
     let data;
     const size = pageSize;
     try {
@@ -45,13 +45,45 @@ async function fetchLocations(page = 0){
     } catch (error) {
         console.error(error);
     }
+}*/
+
+async function fetchLocations(page = 0) {
+  let data;
+  const size = pageSize;
+  try {
+    if (isMobile()) {
+      console.log("Mobile device detected");
+
+      data = await fetch(`${URL}?size=100`, makeOptions("GET", null, false)).then(handleHttpErrors);
+      displayData(data.content);
+
+    } else {
+      console.log("Desktop device detected");
+
+      queryString = `?page=${page}&size=${size}&sort=${sortColumn},${sortDirection}`
+      data = await fetch(`${URL}${queryString}`).then(handleHttpErrors);
+      displayData(data.content);
+      displayPagination(data.totalPages, page);
+
+      // Check if it's a wide screen or desktop
+      if (window.innerWidth >= 1024) {
+        document.getElementById("pagination").style.display = "flex";
+      } else {
+        document.getElementById("pagination").style.display = "none";
+      }
+    }
+    
+    setupLocationEventHandlers();
+  } catch (error) {
+    console.error(error);
+  }
 }
+
 
 function displayData(locations){
     const divObjects = locations.map(location => 
     `<div class="location-box" id="location_${location.id}" style="cursor:pointer";>
     <h2 id="location_${location.id}">${location.locationName}</h2>
-    <h4 id="location_${location.id}">${location.address}</h4>
     </div>`
     ).join('');
     document.getElementById("location-flexbox").innerHTML = divObjects;
@@ -60,7 +92,7 @@ function displayData(locations){
 function displayPagination(totalPages, currentPage) {
     let paginationHtml = '';
     if (currentPage > 0) { // Previous Page
-      paginationHtml += `<li class="page-item"><a class="page-link" data-page="${currentPage - 1}" href="#">Previous</a></li>`
+      paginationHtml += `<li class="page-item"><a class="page-link" data-page="${currentPage - 1}" href="#">«</a></li>`
     }
     // Display page numbers
     let startPage = Math.max(0, currentPage - 2);
@@ -74,7 +106,7 @@ function displayPagination(totalPages, currentPage) {
       }
     }
     if (currentPage < totalPages - 1) { // Next Page
-      paginationHtml += `<li class="page-item"><a class="page-link" data-page="${currentPage + 1}" href="#">Next</a></li>`
+      paginationHtml += `<li class="page-item"><a class="page-link" data-page="${currentPage + 1}" href="#">»</a></li>`
     }
     document.getElementById('pagination').innerHTML = paginationHtml;
 }

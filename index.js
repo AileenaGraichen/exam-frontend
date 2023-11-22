@@ -1,45 +1,20 @@
-<<<<<<< HEAD
-import "https://unpkg.com/navigo"; //Will create the global Navigo object used below
-import "https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js";
-
-import { setActiveLink, renderHtml, loadHtml } from "./utils.js";
-
-=======
 //import "https://unpkg.com/navigo"  //Will create the global Navigo object used below
 import "https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"
 import "./navigo_EditedByLars.js";
 import {setActiveLink, renderHtml, loadHtml} from "./utils.js"
->>>>>>> feature/US-1.1/login
-//Add Init methods here
+import {initLogin} from "./pages/login/login.js"
+import {initLocations} from "./pages/location/location.js"
+import {initManageAccounts} from "./pages/manageAccounts/accounts.js"
 
-<<<<<<< HEAD
-import { initLocations } from "./pages/location/location.js";
-
-import { initLogin } from "./pages/login/login.js";
-import { initManageAccounts } from "./pages/manageAccounts/accounts.js";
-
-=======
->>>>>>> feature/US-1.1/login
 window.addEventListener("load", async () => {
-  //Load html templates here, for navigo
-<<<<<<< HEAD
-  const templateLocations = await loadHtml("./pages/location/location.html")
-  const templateHome = await loadHtml("./pages/home/home.html")
-  const templateAccounts = await loadHtml(
-    "./pages/manageAccounts/accounts.html"
-  );
-  const templateBooks = await loadHtml("./pages/login/login.html");
-
-  const router = new Navigo("/", { hash: true });
-  window.router = router;
-=======
   
   const templateLogin = await loadHtml("./pages/login/login.html")
   const templateHome = await loadHtml("./pages/home/home.html")
+  const templateLocations = await loadHtml("./pages/location/location.html")
+  const templateAccounts = await loadHtml("./pages/manageAccounts/accounts.html")
 
   const router = new Navigo("/",{hash:true});
   window.router = router
->>>>>>> feature/US-1.1/login
   router
       .hooks({
         before(done, match) {
@@ -56,7 +31,11 @@ window.addEventListener("load", async () => {
           initLocations()
         },
 
-<<<<<<< HEAD
+        "/login": () => {
+          renderHtml(templateLogin, "content");
+          initLogin();
+        },
+
       "/manage/accounts": (match) => {
         renderHtml(templateAccounts, "content");
         initManageAccounts();
@@ -68,17 +47,7 @@ window.addEventListener("load", async () => {
           "<h2>404 - Page not found</h2>")
     )
     .resolve();
-=======
-        "/login": () => {
-          renderHtml(templateLogin, "content");
-          initLogin();
-        }
-      })
-      .notFound(() => document.getElementById("content").innerHTML ="<h2>404 - Page not found</h2>")
-      .resolve()
->>>>>>> feature/US-1.1/login
-});
-
+    });
 window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
   alert(
     "Error: " +
