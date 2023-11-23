@@ -64,13 +64,6 @@ label{
     justify-content: center;
 }
 
-/*#pagination {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-  }*/
-
 .pagination-outer{ text-align: center; }
 .pagination{
     background: var(--complementary-color);
@@ -81,8 +74,14 @@ label{
     box-shadow: var(--box-shadow);
     position: relative;
     list-style: none;
-    max-width: auto;
+    white-space: nowrap;
 }
+
+.pagination li {
+    display: inline-block; /* Display list items horizontally */
+    margin-right: 5px; /* Adjust the spacing between items */
+}
+
 .pagination li a.page-link{
     color: var(--primary-color);
     background-color: var(--complementary-color);
@@ -98,6 +97,7 @@ label{
     box-shadow: var(--box-shadow);
     overflow: hidden;
     position: relative;
+    flex-grow: 1;
 }
 .pagination li.active a.page-link,
 .pagination li a.page-link:hover,
@@ -128,7 +128,7 @@ label{
     height: 100%;
     filter: blur(0);
 }
-@media only screen and (max-width: 480px){
+@media only screen and (max-width: 767px){
     .pagination{
         padding: 10px;
         margin: 0;
