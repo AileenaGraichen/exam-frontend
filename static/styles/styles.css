@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+
 :root {
   --heading: "Geneva", 900;
   --sub-heading: "Helvetica", 700;
@@ -47,9 +49,98 @@ button {
   background-color: var(--off-color);
 }
 
-label {
-  color: var(--secondary-color);
+label{
+    color: var(--secondary-color);
 }
+
+.location-box{
+    display: flex;
+    background-color: var(--complementary-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+    margin: 1rem 0 1rem 0;
+    padding: 1rem;
+    justify-content: center;
+}
+
+.pagination-outer{ text-align: center; }
+.pagination{
+    background: var(--complementary-color);
+    font-family: 'Noto Sans', sans-serif;
+    padding: 20px 30px;
+    display: inline-flex;
+    border-radius: 50px;
+    box-shadow: var(--box-shadow);
+    position: relative;
+    list-style: none;
+    white-space: nowrap;
+}
+
+.pagination li {
+    display: inline-block; /* Display list items horizontally */
+    margin-right: 5px; /* Adjust the spacing between items */
+}
+
+.pagination li a.page-link{
+    color: var(--primary-color);
+    background-color: var(--complementary-color);
+    font-size: 20px;
+    text-align: center;
+    line-height: 45px;
+    height: 45px;
+    width: 45px;
+    padding: 0;
+    margin: 0 12px 0 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    position: relative;
+    flex-grow: 1;
+}
+.pagination li.active a.page-link,
+.pagination li a.page-link:hover,
+.pagination li.active a.page-link:hover{
+    color: var(--complementary-color);
+    border: none;
+}
+.pagination li:first-child a.page-link{ border-radius: 40px 0 0 40px; }
+.pagination li:last-child a.page-link{
+    margin-right: 0;
+    border-radius: 0 40px 40px 0;
+}
+.pagination li a.page-link:before{
+    content: '';
+    background-color: var(--off-color);
+    height: 0;
+    width: 100%;
+    filter: blur(10px);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    transition: all 0.3s;
+}
+.pagination li.active a.page-link:before,
+.pagination li a.page-link:hover:before,
+.pagination li.active a.page-link:hover:before{
+    height: 100%;
+    filter: blur(0);
+}
+@media only screen and (max-width: 767px){
+    .pagination{
+        padding: 10px;
+        margin: 0;
+        border-radius: 30px;
+        display: block;
+    }
+    .pagination li{
+        display: inline-block;
+        margin: 0 0 5px;
+    }
+}
+
 
 /* The Modal (background) */
 .modal {
@@ -88,3 +179,4 @@ label {
   text-decoration: none;
   cursor: pointer;
 }
+

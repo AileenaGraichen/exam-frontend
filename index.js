@@ -1,19 +1,18 @@
 //import "https://unpkg.com/navigo"; //Will create the global Navigo object used below
 import "https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js";
 import "./navigo_EditedByLars.js";
-import { setActiveLink, renderHtml, loadHtml } from "./utils.js";
-//Add Init methods here
-import { initLogin } from "./pages/login/login.js";
-import { initManageAccounts } from "./pages/manageAccounts/accounts.js";
+
+import {setActiveLink, renderHtml, loadHtml} from "./utils.js"
+import {initLogin} from "./pages/login/login.js"
+import {initLocations} from "./pages/location/location.js"
+import {initManageAccounts} from "./pages/manageAccounts/accounts.js"
 
 window.addEventListener("load", async () => {
-  //Load html templates here, for navigo
-
-  const templateLogin = await loadHtml("./pages/login/login.html");
-  const templateHome = await loadHtml("./pages/home/home.html");
-  const templateAccounts = await loadHtml(
-    "./pages/manageAccounts/accounts.html"
-  );
+  
+  const templateLogin = await loadHtml("./pages/login/login.html")
+  const templateHome = await loadHtml("./pages/home/home.html")
+  const templateLocations = await loadHtml("./pages/location/location.html")
+  const templateAccounts = await loadHtml("./pages/manageAccounts/accounts.html")
 
   const router = new Navigo("/", { hash: true });
   window.router = router;
@@ -26,6 +25,12 @@ window.addEventListener("load", async () => {
     })
     .on({
       "/": () => renderHtml(templateHome, "content"),
+
+
+        "/location": () => {
+          renderHtml(templateLocations, "content")
+          initLocations()
+        },
 
       "/accounts": () => {
         renderHtml(templateAccounts, "content");
@@ -44,3 +49,4 @@ window.addEventListener("load", async () => {
     )
     .resolve();
 });
+

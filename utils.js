@@ -93,24 +93,25 @@ export async function handleHttpErrors(res) {
  * your JavaScript files
  */
 export function sanitizeStringWithTableRows(tableRows) {
-  let secureRows = DOMPurify.sanitize("<table>" + tableRows + "</table>");
-  secureRows = secureRows.replace("<table>", "").replace("</table>", "");
-  return secureRows;
+  let secureRows = DOMPurify.sanitize("<table>" + tableRows + "</table>")
+  secureRows = secureRows.replace("<table>", "").replace("</table>", "")
+  return secureRows
 }
 
 export function makeOptions(method, body, addToken) {
   const opts = {
     method: method,
     headers: {
-      "Content-type": "application/json",
-      Accept: "application/json",
-    },
-  };
+      "Content-type": "application/json",s
+      "Accept": "application/json"
+    }
+  }
   if (body) {
     opts.body = JSON.stringify(body);
   }
-  if (addToken && localStorage.getItem("token")) {
-    opts.headers.Authorization = "Bearer " + localStorage.getItem("token");
+   if (addToken && localStorage.getItem("token")) {
+    opts.headers.Authorization = "Bearer " + localStorage.getItem("token")
   }
   return opts;
 }
+
