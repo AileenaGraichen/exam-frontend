@@ -102,7 +102,7 @@ export function makeOptions(method, body, addToken) {
   const opts = {
     method: method,
     headers: {
-      "Content-type": "application/json",s
+      "Content-type": "application/json",
       "Accept": "application/json"
     }
   }
