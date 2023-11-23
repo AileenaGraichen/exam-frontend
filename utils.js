@@ -4,14 +4,13 @@
  * @param {string} contentId
  */
 export function renderHtml(template, contentId) {
-  const content = document.getElementById(contentId)
+  const content = document.getElementById(contentId);
   if (!content) {
-    throw Error("No Element found for provided content id")
+    throw Error("No Element found for provided content id");
   }
-  content.innerHTML = ""
-  content.append(template)
+  content.innerHTML = "";
+  content.append(template);
 }
-
 
 /**
  * Loads an external file with an div with the class "template", adds it to the body of your page, and returns
@@ -20,19 +19,36 @@ export function renderHtml(template, contentId) {
  * @return {Promise<*>} On succesfull resolvement, the HtmlTemplate found in the file
  */
 export async function loadHtml(page) {
-  const resHtml = await fetch(page).then(r => {
+  const resHtml = await fetch(page).then((r) => {
     if (!r.ok) {
-      throw new Error(`Failed to load the page: '${page}' `)
+      throw new Error(`Failed to load the page: '${page}' `);
     }
-    return r.text()
+    return r.text();
   });
-  const parser = new DOMParser()
-  const content = parser.parseFromString(resHtml, "text/html")
-  const div = content.querySelector(".template")
+  const parser = new DOMParser();
+  const content = parser.parseFromString(resHtml, "text/html");
+  const div = content.querySelector(".template");
   if (!div) {
-    throw new Error(`No outer div with class 'template' found in file '${page}'`)
+    throw new Error(
+      `No outer div with class 'template' found in file '${page}'`
+    );
   }
-  return div
+  return div;
+}
+
+/**
+ * Only meant for when Navigo is set to use Hash based routing (Always this semester)
+ * If users try to enter your site with only "/", it will change this to "/#/" as required
+ * for Hash based routing
+ * Call it before you start using the router (add the specific routes)
+ */
+export function adjustForMissingHash() {
+  let path = window.location.hash;
+  if (path == "") {
+    //Do this only for hash
+    path = "#/";
+    window.history.pushState({}, path, window.location.href + path);
+  }
 }
 
 /**
@@ -43,13 +59,13 @@ export async function loadHtml(page) {
  */
 export function setActiveLink(topnav, activeUrl) {
   const links = document.getElementById(topnav).querySelectorAll("a");
-  links.forEach(child => {
-    child.classList.remove("active")
+  links.forEach((child) => {
+    child.classList.remove("active");
     //remove leading '/' if any
     if (child.getAttribute("href").replace(/\//, "") === activeUrl) {
-      child.classList.add("active")
+      child.classList.add("active");
     }
-  })
+  });
 }
 
 /**
@@ -60,14 +76,13 @@ export function setActiveLink(topnav, activeUrl) {
 export async function handleHttpErrors(res) {
   if (!res.ok) {
     const errorResponse = await res.json();
-    const error = new Error(errorResponse.message)
-    // @ts-ignore
-    error.fullResponse = errorResponse
-    throw error
+    const msg = errorResponse.message
+      ? errorResponse.message
+      : "No error details provided";
+    throw new Error(msg);
   }
-  return res.json()
+  return res.json();
 }
-
 
 /**
  * HINT --> USE DOMPurify.santitize(..) to sanitize a full string of tags to be inserted
@@ -87,7 +102,7 @@ export function makeOptions(method, body, addToken) {
   const opts = {
     method: method,
     headers: {
-      "Content-type": "application/json",
+      "Content-type": "application/json",s
       "Accept": "application/json"
     }
   }
@@ -99,3 +114,4 @@ export function makeOptions(method, body, addToken) {
   }
   return opts;
 }
+
