@@ -6,6 +6,7 @@ import {setActiveLink, renderHtml, loadHtml} from "./utils.js"
 import {initLogin} from "./pages/login/login.js"
 import {initLocations} from "./pages/location/location.js"
 import {initManageAccounts} from "./pages/manageAccounts/accounts.js"
+import {initDashboard} from "./pages/dashboard/dashboard.js";
 
 window.addEventListener("load", async () => {
   
@@ -13,6 +14,7 @@ window.addEventListener("load", async () => {
   const templateHome = await loadHtml("./pages/home/home.html")
   const templateLocations = await loadHtml("./pages/location/location.html")
   const templateAccounts = await loadHtml("./pages/manageAccounts/accounts.html")
+  const templateDashboard = await loadHtml("./pages/dashboard/dashboard.html")
 
   const router = new Navigo("/", { hash: true });
   window.router = router;
@@ -25,12 +27,15 @@ window.addEventListener("load", async () => {
     })
     .on({
       "/": () => renderHtml(templateHome, "content"),
-
-
-        "/location": () => {
-          renderHtml(templateLocations, "content")
-          initLocations()
-        },
+      "/dashboard": () => {
+        renderHtml(templateDashboard, "content")
+        initDashboard()
+      },
+      
+      "/location": () => {
+        renderHtml(templateLocations, "content")
+        initLocations()
+      },
 
       "/accounts": () => {
         renderHtml(templateAccounts, "content");
