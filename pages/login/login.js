@@ -22,7 +22,7 @@ async function login() {
     try {
       const res = await fetch(API_URL + "/auth/login", options).then(r => handleHttpErrors(r))
       storeLoginDetails(res)
-      window.router.navigate("/")
+      window.router.navigate("/dashboard")
     } catch (err) {
       document.getElementById("login-fail").innerText = err.message
     }
@@ -52,7 +52,8 @@ async function login() {
     // Hide or show all menu-links depending on login status
     // document.getElementById("login-container").style.display = loggedIn ? "none" : "block"
     
-    document.getElementById("logout-btn").style.display = loggedIn ? "block" : "none"
+    //Looks for log out button. Keep commented out until implementation of such button
+    //document.getElementById("logout-btn").style.display = loggedIn ? "block" : "none"
     
     const adminListItems = document.querySelectorAll('.admin-only');
     const cleanRoutes = document.querySelectorAll('.clean-only'); // Use querySelectorAll to get all elements
