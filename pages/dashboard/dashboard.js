@@ -41,38 +41,31 @@ async function setupData(userRoles){
 
 
 function fetchTasks(){
-    let yValues = [80, 5, 10]
+    const activeChart = Chart.getChart("myChart")
+    if(activeChart){
+        activeChart.destroy();
+    }
+    
+    let yValues = [60, 12, 20]
     let xValues = ["Færdige", "I gang", "Ikke startet"]
     const barColors = ["green","blue", "red"];
     //fetch task data and put into "yValues" array before creating chart. Above is just temp data.
     //Sørg for at dataen er returneret, inden der laves et chart. Så pas på med async kald der fortsætter inden data er modtaget. 
     //Hent alle tasks, check status, og tæl op på 3 variabler for hver type status. Lig efter loopet værdierne ind i yValues. 
 
-    new Chart("myChart", {
-        type: "doughnut",
-        data: {
-          labels: xValues,
-          datasets: [{
-            backgroundColor: barColors,
-            data: yValues
-          }]
-        },
-        options: {
-          title: {
-            display: false,
-            text: "Opgave status"
-          }
-        }
-      });
+    //Ud fra yValues, udregn % der er done. 
+    calculateDoneTasks(yValues);
+    createChart(xValues, yValues, barColors);
+    
 }
 async function fetchLocations(){
-    let data = await fetch(`${API_URL}/location?size=5`, makeOptions("GET", null, false)).then(handleHttpErrors);
+    let data = await fetch(`${API_URL}/location?size=10`, makeOptions("GET", null, false)).then(handleHttpErrors);
     displayData(data.content);
 }
 function displayData(locations){
     const locationObjects = locations.map(location => 
-    `<div class="location-box" >
-    <h2>${location.locationName}</h2>
+    `<div class="dashboard-data-list">
+    <h4>${location.locationName}</h4>
     </div>`
     ).join('');
     document.getElementById("overview-data-box").innerHTML = locationObjects;
@@ -89,4 +82,38 @@ async function fetchPersonel(){
     //setupData and put into div
     //document.getElementById("personel-data-box").innerHTML = personelObjects;
 
+}
+
+function calculateDoneTasks(yValues){
+    const finishedTasks = yValues[0];
+    const totalTasks = yValues.reduce((accumulator, value) => accumulator + value, 0);
+    const taskDonePercentage = Math.floor(finishedTasks/totalTasks*100);
+
+    document.getElementById("donut-inner-text").innerHTML = `${taskDonePercentage}%`
+}
+    
+function createChart(xValues, yValues, barColors){
+    new Chart("myChart", {
+        type: "doughnut",
+        data: {
+          labels: xValues,
+          fontColor: "black",
+          datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+          }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display:false,
+                    text: "Færdige opgaver",
+                    font: {
+                        size: 18
+                    }
+                },
+            }
+
+        }
+      });
 }
