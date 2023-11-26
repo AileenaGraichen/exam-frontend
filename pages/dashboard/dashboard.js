@@ -93,7 +93,7 @@ function calculateDoneTasks(yValues){
 }
     
 function createChart(xValues, yValues, barColors){
-    new Chart("myChart", {
+    const chart = new Chart("myChart", {
         type: "doughnut",
         data: {
           labels: xValues,
@@ -111,9 +111,12 @@ function createChart(xValues, yValues, barColors){
                     font: {
                         size: 18
                     }
-                },
+                }, 
+            },
+            onClick: function(event, chart) {
+                // Disable the click event by doing nothing
             }
-
+            
         }
       });
 }
