@@ -2,22 +2,28 @@
     <h1>Dashboard</h1>
     <p id="welcome-text"></p>
     <div id="dashboard-grid">
-        <div class=dashboard-item id="statistics-box">
-            <h3>Opgaver færdiggjort</h3>
+        <div class=dashboard-item id="task-box">
+            <h3>Opgaver</h3>
+            <canvas id="myChart" style="width:100%;max-width:700px;"></canvas>
         </div>
     
         <div class=dashboard-item id="cleaning-box">
             <h3>Rengøring</h3>
+            <div id="cleaning-data-box"></div>
         </div>
     
         <div class=dashboard-item id="overview-box">
             <h3>Overblik</h3>
+            <div id="overview-data-box"></div>
         </div>
     
         <div class=dashboard-item id="personel-box">
             <h3>Personale</h3>
+            <div id="personel-data-box"></div>
         </div>
         
-        <div style="grid-area:five;"><h2>Random items?</h2></div>
+        <div class="dashboard-item" id="some-id-idk" style="grid-area:five;">
+            <h2>Random items?</h2>
+        </div>
     </div>
 </div>

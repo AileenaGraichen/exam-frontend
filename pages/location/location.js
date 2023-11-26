@@ -1,7 +1,7 @@
 import { handleHttpErrors, makeOptions } from "../../utils.js";
 import { API_URL } from "../../settings.js";
 
-const URL = API_URL+"/api/location"
+const URL = API_URL+"/location"
 
 let pageSize = 5;
 let sortColumn = 'locationName';
