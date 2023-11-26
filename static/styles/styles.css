@@ -210,7 +210,8 @@ label{
 }
 @media(max-width:1200px){
   #dashboard-grid{
-    width:900px;
+    max-width:900px;
+    width:auto;
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: repeat(5, 1fr);
     grid-template-areas:
@@ -225,11 +226,11 @@ label{
   border-radius: var(--border-radius);
   padding: 5px 0 0 15px;
   cursor:pointer;
-  min-height:350px;
   border: 1px solid green;
 }
 
 #task-box{
+  
   grid-area:one;
 }
 #cleaning-box{
