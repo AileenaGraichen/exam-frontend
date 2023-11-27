@@ -80,7 +80,7 @@ function displayData(units) {
         .map((unit) => {
             return `<tr>
                 <td>${unit.unitNumber}</td>
-                <td>${unit.unitType}</td>
+                <td>${unit.type}</td>
                 <!-- Display other unit information as needed -->
                 <td><button class="btn" id="unit-details_${unit.id}">Details</button></td>
             </tr>`;

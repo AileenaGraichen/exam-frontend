@@ -22,7 +22,7 @@ async function login() {
     try {
       const res = await fetch(API_URL + "/auth/login", options).then(r => handleHttpErrors(r))
       storeLoginDetails(res)
-      window.router.navigate("/")
+      window.router.navigate("/dashboard")
     } catch (err) {
       document.getElementById("login-fail").innerText = err.message
     }
