@@ -10,7 +10,7 @@ import {
 
 export async function initManageAccounts() {
   renderAccounts();
-  document.getElementById("manage-account-content").onclick = manageAccounts;
+  document.getElementById("manage-account-content").onclick = accountDetails;
   document.getElementById("add-account").addEventListener("click", addAccount);
 }
 
@@ -36,7 +36,7 @@ async function renderAccounts() {
         <div>
           <strong>Role:</strong> ${account.roleNames}
         </div>
-        <button id="account-btn_manage_${account.userName}" type="button" class="btn btn-sm btn-primary">Manage</button>
+        <button id="account-manage_${account.userName}" type="button" class="btn btn-sm btn-primary">Manage</button>
       </div>`;
       })
       .join("");
@@ -115,7 +115,7 @@ async function addRoleToAccount(username, role) {
   }
 }
 
-async function fetchUser(username) {
+/* async function fetchUser(username) {
   try {
     return await fetch(
       `${URL}/${username}`,
@@ -129,7 +129,7 @@ async function fetchUser(username) {
 
 async function showManageAccounts(evt) {
   const clicked = evt.target;
-  if (!clicked.id.startsWith("account-btn_manage_")) {
+  if (!clicked.id.startsWith("account-manage_")) {
     return;
   }
 
@@ -272,16 +272,13 @@ async function updateAccount(username) {
     //TODO Handle errors correctly
     console.error("Could not update user from server: " + err);
   }
-}
+} */
 
-window.onclick = function (event) {
-  if (event.target == document.getElementById("account-modal")) {
-    document.getElementById("account-modal").style.display = "none";
+async function accountDetails(evt) {
+  const clicked = evt.target;
+  if (!clicked.id.startsWith("account-manage_")) {
+    return;
   }
-};
-
-/* document.getElementById("account-modal").style.display = "block";
-    let span = document.getElementsByClassName("close")[0];
-    span.onclick = function () {
-      document.getElementById("account-modal").style.display = "none";
-    }; */
+  const username = clicked.id.replace("account-manage_", "");
+  window.router.navigate("account-details?id=" + username);
+}
