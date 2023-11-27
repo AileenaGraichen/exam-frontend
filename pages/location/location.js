@@ -3,6 +3,7 @@ import { API_URL } from "../../settings.js";
 
 const URL = API_URL + "/location";
 
+
 let pageSize = 5;
 let sortColumn = "locationName";
 let sortDirection = "asc";
@@ -23,31 +24,6 @@ export function initLocations() {
 
   fetchLocations(Number(page));
 }
-
-/*async function fetchLocations(page = 0){
-    let data;
-    const size = pageSize;
-    try {
-        if (isMobile()) {
-            console.log("Mobile device detected");
-    
-            data = await fetch(`${URL}?size=100`, makeOptions("GET", null, false)).then(handleHttpErrors);
-            displayData(data.content);  
-    
-          } else {
-            console.log("Desktop device detected");
-    
-            queryString = `?page=${page}&size=${size}&sort=${sortColumn},${sortDirection}`
-            data = await fetch(`${URL}${queryString}`).then(handleHttpErrors);
-            displayData(data.content);
-            displayPagination(data.totalPages, page);
-          }
-          
-          setupLocationEventHandlers();
-    } catch (error) {
-        console.error(error);
-    }
-}*/
 
 async function fetchLocations(page = 0) {
   let data;
@@ -139,14 +115,14 @@ function setupLocationEventHandlers() {
   const locationBoxes = document.querySelectorAll(".location-box");
   for (let i = 0; i < locationBoxes.length; i++) {
     locationBoxes[i].addEventListener("click", (evt) => {
-      const target = evt.target;
+      const target = evt.currentTarget;
       if (!target.id.includes("location_")) {
         return;
       }
       const id = target.id.replace("location_", "");
       clickedLocation = id;
       console.log(clickedLocation);
-      window.router.navigate("/unit");
+      window.router.navigate(`/unit?locationId=${clickedLocation}`);
     });
   }
 }

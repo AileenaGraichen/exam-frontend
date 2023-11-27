@@ -9,8 +9,10 @@ import { initManageAccounts } from "./pages/manageAccounts/accounts.js";
 import { initAccountDetails } from "./pages/manageAccounts/accountDetails.js";
 import { initManageOwners } from "./pages/manageOwners/owners.js";
 import { initOwnerDetails } from "./pages/manageOwners/ownerDetails.js";
+import { initUnits } from "./pages/manageUnits/units.js";
+import {initDashboard} from "./pages/dashboard/dashboard.js";
 
-window.addEventListener("load", async () => {
+window.addEventListener("DOMContentLoaded", async () => {
   const templateLogin = await loadHtml("./pages/login/login.html");
   const templateHome = await loadHtml("./pages/home/home.html");
   const templateLocations = await loadHtml("./pages/location/location.html");
@@ -24,6 +26,9 @@ window.addEventListener("load", async () => {
   const templateOwnerDetails = await loadHtml(
     "./pages/manageOwners/ownerDetails.html"
   );
+  const templateUnits = await loadHtml("./pages/manageUnits/units.html");
+  const templateDashboard = await loadHtml("./pages/dashboard/dashboard.html")
+
 
   const router = new Navigo("/", { hash: true });
   window.router = router;
@@ -37,10 +42,20 @@ window.addEventListener("load", async () => {
     .on({
       "/": () => renderHtml(templateHome, "content"),
 
+      "/dashboard": () => {
+        renderHtml(templateDashboard, "content")
+        initDashboard()
+      },
       "/location": () => {
         renderHtml(templateLocations, "content");
         initLocations();
       },
+
+      "/unit": (match) => {
+        renderHtml(templateUnits, "content");
+        initUnits(match);
+      },
+
       "/accounts": () => {
         renderHtml(templateAccounts, "content");
         initManageAccounts();
