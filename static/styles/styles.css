@@ -238,12 +238,12 @@ label{
 }
 
 #donut-inner-text{
-  font-size:40px;
+  font-size:50px;
   width:auto;
   height:auto;
   position: absolute;
   z-index:5000;
-  margin: -27% 0 0 40%;
+  margin: -55% 0 0 35%;
 }
 
 #cleaning-box{
