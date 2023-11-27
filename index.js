@@ -11,7 +11,7 @@ import { initManageOwners } from "./pages/manageOwners/owners.js";
 import { initOwnerDetails } from "./pages/manageOwners/ownerDetails.js";
 import { initUnits } from "./pages/manageUnits/units.js";
 
-window.addEventListener("load", async () => {
+window.addEventListener("DOMContentLoaded", async () => {
   const templateLogin = await loadHtml("./pages/login/login.html");
   const templateHome = await loadHtml("./pages/home/home.html");
   const templateLocations = await loadHtml("./pages/location/location.html");

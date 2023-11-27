@@ -1,7 +1,7 @@
 import { API_URL } from "../../settings.js";
 import { handleHttpErrors, makeOptions } from "../../utils.js";
 
-const URL = API_URL + "/units";
+const URL = API_URL + "/unit";
 
 let isInitialized = false;
 
@@ -35,11 +35,14 @@ async function fetchUnits(page = 0) {
         if (isMobile()) {
             data = await fetch(
                 `${URL}?size=100`,
-                makeOptions("GET", null, false)
+                makeOptions("GET", null, true)
             ).then(handleHttpErrors);
         } else {
             const queryString = `?page=${page}&size=${size}`;
-            data = await fetch(`${URL}${queryString}`).then(handleHttpErrors);
+            data = await fetch(`${URL}${queryString}`,
+            makeOptions("GET", null, true)
+            ).then(handleHttpErrors);
+            
         }
 
         displayData(data.content);
@@ -57,7 +60,7 @@ async function fetchUnitsByLocationId(page = 0, locationId) {
         if (isMobile()) {
             data = await fetch(
                 `${URL}/${locationId}?size=100`,
-                makeOptions("GET", null, false)
+                makeOptions("GET", null, true)
             ).then(handleHttpErrors);
         } else {
             const queryString = `?page=${page}&size=${size}`;
@@ -72,7 +75,7 @@ async function fetchUnitsByLocationId(page = 0, locationId) {
     }
 }
 
-function displayData(units) {
+function displayData(units) {  
     const tableRows = units
         .map((unit) => {
             return `<tr>
@@ -86,14 +89,46 @@ function displayData(units) {
     document.getElementById("unit-table-rows").innerHTML = tableRows;
 }
 
-function displayPagination(totalPages, currentPage) {
+/*function displayPagination(totalPages, currentPage) {
     let paginationHtml = "";
     if (currentPage > 0) {
         paginationHtml += `<li class="page-item"><a class="page-link" data-page="${currentPage - 1}" href="#">Previous</a></li>`;
     }
     paginationHtml += `<li class="page-item active"><a class="page-link" data-page="${currentPage}" href="#">${currentPage + 1}</a></li>`;
     document.getElementById("pagination").innerHTML = paginationHtml;
-}
+}*/
+
+function displayPagination(totalPages, currentPage) {
+    let paginationHtml = "";
+    if (currentPage > 0) {
+      // Previous Page
+      paginationHtml += `<li class="page-item"><a class="page-link" data-page="${
+        currentPage - 1
+      }" href="#">«</a></li>`;
+    }
+    // Display page numbers
+    let startPage = Math.max(0, currentPage - 2);
+    let endPage = Math.min(totalPages - 1, currentPage + 2);
+  
+    for (let i = startPage; i <= endPage; i++) {
+      if (i === currentPage) {
+        paginationHtml += `<li class="page-item active"><a class="page-link" href="#">${
+          i + 1
+        }</a></li>`;
+      } else {
+        paginationHtml += `<li class="page-item"><a class="page-link" data-page="${i}" href="#">${
+          i + 1
+        }</a></li>`;
+      }
+    }
+    if (currentPage < totalPages - 1) {
+      // Next Page
+      paginationHtml += `<li class="page-item"><a class="page-link" data-page="${
+        currentPage + 1
+      }" href="#">»</a></li>`;
+    }
+    document.getElementById("pagination").innerHTML = paginationHtml;
+  }
 
 function handlePaginationClick(evt) {
     const clicked = evt.target;
