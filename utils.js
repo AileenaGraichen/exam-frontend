@@ -93,9 +93,9 @@ export async function handleHttpErrors(res) {
  * your JavaScript files
  */
 export function sanitizeStringWithTableRows(tableRows) {
-  let secureRows = DOMPurify.sanitize("<table>" + tableRows + "</table>")
-  secureRows = secureRows.replace("<table>", "").replace("</table>", "")
-  return secureRows
+  let secureRows = DOMPurify.sanitize("<table>" + tableRows + "</table>");
+  secureRows = secureRows.replace("<table>", "").replace("</table>", "");
+  return secureRows;
 }
 
 export function makeOptions(method, body, addToken) {
@@ -103,15 +103,34 @@ export function makeOptions(method, body, addToken) {
     method: method,
     headers: {
       "Content-type": "application/json",
-      "Accept": "application/json"
-    }
-  }
+      Accept: "application/json",
+    },
+  };
   if (body) {
     opts.body = JSON.stringify(body);
   }
-   if (addToken && localStorage.getItem("token")) {
-    opts.headers.Authorization = "Bearer " + localStorage.getItem("token")
+  if (addToken && localStorage.getItem("token")) {
+    opts.headers.Authorization = "Bearer " + localStorage.getItem("token");
   }
   return opts;
 }
 
+export async function handleFetchError(retryFunction, retryCount, contentDiv) {
+  const MAX_RETRIES = 2;
+  const RETRY_DELAY = 500;
+  if (retryCount < MAX_RETRIES) {
+    setTimeout(() => {
+      retryFunction(retryCount + 1);
+    }, RETRY_DELAY * Math.pow(2, retryCount)); // Exponential backoff
+  } else {
+    const fallbackMessage = `<div>
+      <h1>Something went wrong, please try again later :(</h1>
+      <h3>If the problem persists, please contact S9uaredSolutions</h3>
+    </div>`;
+    contentDiv.innerHTML = fallbackMessage;
+  }
+}
+
+export const loadingContent = `<div id="loading-spinner" class="spinner-border text-primary" role="status">
+<span class="sr-only"></span>
+</div>`;
