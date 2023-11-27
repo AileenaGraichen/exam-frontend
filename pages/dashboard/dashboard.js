@@ -47,12 +47,6 @@ function fetchTasks(){
     // }
     
     let yValues = [60, 12, 20]
-    const activeChart = Chart.getChart("myChart")
-    if(activeChart){
-        activeChart.destroy();
-    }
-    
-    let yValues = [60, 12, 20]
     let xValues = ["Færdige", "I gang", "Ikke startet"]
     const barColors = ["green","blue", "red"];
     //fetch task data and put into "yValues" array before creating chart. Above is just temp data.
