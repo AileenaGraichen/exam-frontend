@@ -3,6 +3,7 @@ import { API_URL } from "../../settings.js";
 
 const URL = API_URL + "/location";
 
+
 let pageSize = 5;
 let sortColumn = "locationName";
 let sortDirection = "asc";

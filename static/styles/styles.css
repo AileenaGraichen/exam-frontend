@@ -186,3 +186,98 @@ label{
   cursor: pointer;
 }
 
+
+/*---------DASHBOARD--------*/
+#dashboard-grid{
+  display:grid;
+  grid-column-gap:40px;
+  grid-row-gap:20px;
+  width:1500px;
+  height:1000px;
+  border: 1px solid green;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas:
+  "one two three"
+  "four four three"
+  "five five five"
+}
+
+@media(max-width:1500px){
+  #dashboard-grid{
+    width:1200px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-areas:
+    "one two"
+    "four three"
+    "four three"
+    "five five"
+  }
+}
+@media(max-width:1200px){
+  #dashboard-grid{
+    max-width:900px;
+    width:auto;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 0;
+    grid-template-areas:
+    "one"
+    "two"
+    "three"
+    "four"
+    "five"
+  }
+}
+.dashboard-item{
+  border-radius: var(--border-radius);
+  padding: 5px 0 0 15px;
+  cursor:pointer;
+  border: 1px solid green;
+}
+
+
+#task-box{
+  grid-area:one;
+  position: relative;
+}
+
+#donut-inner-text{
+  font-size:50px;
+  width:auto;
+  height:auto;
+  position: absolute;
+  z-index:5000;
+  margin: -55% 0 0 35%;
+}
+
+#cleaning-box{
+  grid-area:two;
+}
+#overview-box{
+ 
+  grid-area:three;
+}
+#personel-box{
+  
+  grid-area:four;
+}
+
+.dashboard-data-list{
+  width:90%;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: var(--complementary-color);
+  margin-bottom: 15px;  
+}
+
+.dashboard-data-list:first-child{
+  margin-top:30px;
+}
+.dashboard-data-list h4{
+  text-overflow: ellipsis;
+  overflow: hidden; 
+  white-space: nowrap;
+}
