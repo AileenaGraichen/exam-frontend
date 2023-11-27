@@ -187,6 +187,7 @@ label{
   grid-column-gap:40px;
   grid-row-gap:20px;
   width:1500px;
+  height:1000px;
   border: 1px solid green;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
@@ -212,8 +213,9 @@ label{
   #dashboard-grid{
     max-width:900px;
     width:auto;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: auto;
     grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 0;
     grid-template-areas:
     "one"
     "two"
@@ -229,12 +231,22 @@ label{
   border: 1px solid green;
 }
 
+
 #task-box{
-  
   grid-area:one;
+  position: relative;
 }
+
+#donut-inner-text{
+  font-size:40px;
+  width:auto;
+  height:auto;
+  position: absolute;
+  z-index:5000;
+  margin: -27% 0 0 40%;
+}
+
 #cleaning-box{
-  
   grid-area:two;
 }
 #overview-box{
@@ -244,4 +256,22 @@ label{
 #personel-box{
   
   grid-area:four;
+}
+
+.dashboard-data-list{
+  width:90%;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: var(--complementary-color);
+  margin-bottom: 15px;  
+}
+
+.dashboard-data-list:first-child{
+  margin-top:30px;
+}
+.dashboard-data-list h4{
+  text-overflow: ellipsis;
+  overflow: hidden; 
+  white-space: nowrap;
 }
