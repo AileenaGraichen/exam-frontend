@@ -6,26 +6,26 @@ import {
   makeOptions,
   sanitizeStringWithTableRows,
   handleHttpErrors,
+  handleFetchError,
+  loadingContent,
 } from "../../utils.js";
 
 export async function initManageOwners() {
+  document.getElementById("owner-page-content").innerHTML = loadingContent;
   renderOwners();
   document.getElementById("owner-page-content").onclick = ownerDetails;
-  //document.getElementById("add-owner").addEventListener("click", addOwner);
+  window.onclick = closeModal;
 }
 
-async function renderOwners() {
-  let ownerIds = [];
+async function renderOwners(retryCount = 0) {
+  const addButton = `<button id="add-owner">Tilføj Ejer</button>`;
   try {
     let owners = await fetch(URL, makeOptions("GET", null, true)).then(
       handleHttpErrors
     );
 
-    console.log(owners);
-
     const ownerDivs = owners.content
       .map((owner) => {
-        ownerIds.push(owner.id);
         return `<div class="owner-box">
         <p class="owner-name">${owner.firstName} ${owner.lastName}</p>
         <p class="owner-email">${owner.email}</p>
@@ -35,11 +35,14 @@ async function renderOwners() {
       })
       .join("");
 
-    document.getElementById("owner-page-content").innerHTML = ownerDivs;
+    document.getElementById("owner-page-content").innerHTML =
+      addButton + ownerDivs;
+    document.getElementById("add-owner").onclick = displayAddOwnerModal;
   } catch (err) {
     //TODO; Handle errors correctly
-    //TODO Remove in production?
     console.error("Could not fetch owners: " + err);
+    const contentDiv = document.getElementById("owner-page-content");
+    handleFetchError(renderOwners, retryCount, contentDiv);
   }
 }
 
@@ -53,6 +56,67 @@ async function ownerDetails(evt) {
   window.router.navigate("owner-details?id=" + id);
 }
 
+function displayAddOwnerModal() {
+  const modal = document.getElementById("owner-modal");
+
+  const inputForm = `<span class="close">&times;</span>
+  <input type="text" id="create-owner-firstname" placeholder="Fornavn"/>
+  <input type="text" id="create-owner-lastname" placeholder="Efternavn" />
+  <input type="text" id="create-owner-email" placeholder="Email" />
+  <input type="text" id="create-owner-mobile" placeholder="Mobil" />
+  <button id="create-owner-btn">Bekræft</button>
+  <p class="error-message"></p>`;
+
+  modal.querySelector(".modal-content").innerHTML = inputForm;
+  modal.style.display = "block";
+
+  const closeBtn = modal.querySelector(".close");
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  const createBtn = modal.querySelector("#create-owner-btn");
+  createBtn.addEventListener("click", async () => {
+    await createOwner();
+    modal.style.display = "none";
+    renderOwners();
+  });
+}
 //TODO ADD OWNER
+async function createOwner() {
+  const firstname = document.getElementById("create-owner-firstname").value;
+  const lastname = document.getElementById("create-owner-lastname").value;
+  const email = document.getElementById("create-owner-email").value;
+  const mobile = document.getElementById("create-owner-mobile").value;
+
+  if (!firstname || !lastname) {
+    document.querySelector(".error-message").innerText =
+      "Udfyld venligst Fornavn og Efternavn";
+    return;
+  }
+
+  const body = {
+    firstName: firstname,
+    lastName: lastname,
+    email: email,
+    mobile: mobile,
+  };
+
+  try {
+    await fetch(URL, makeOptions("POST", body, true)).then(handleHttpErrors);
+  } catch (err) {
+    //TODO; Handle errors correctly
+    document.querySelector(".error-message").innerText = err;
+    //TODO Remove in production
+    console.error("Could not create new owner: " + err);
+  }
+}
 //TODO SEARCH BY NAME
+
 //TODO GET BY MOBILE
+
+function closeModal(evt) {
+  if (evt.target == document.getElementById("owner-modal")) {
+    document.getElementById("owner-modal").style.display = "none";
+  }
+}

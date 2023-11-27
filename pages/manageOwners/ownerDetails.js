@@ -6,18 +6,21 @@ import {
   makeOptions,
   sanitizeStringWithTableRows,
   handleHttpErrors,
+  handleFetchError,
+  loadingContent,
 } from "../../utils.js";
 
 export async function initOwnerDetails(match) {
   if (match?.params?.id) {
     const id = match.params.id;
-    document.getElementById("owner-details-content").innerHTML = " ";
+    document.getElementById("owner-details-content").innerHTML = loadingContent;
     fetchAndRenderOwnerDetails(id);
   }
   document.getElementById("owner-details-content").onclick = manageOwner;
+  window.onclick = closeModal;
 }
 
-async function fetchAndRenderOwnerDetails(ownerId) {
+async function fetchAndRenderOwnerDetails(ownerId, retryCount = 0) {
   try {
     owner = await fetch(
       `${URL}/${ownerId}`,
@@ -54,8 +57,9 @@ async function fetchAndRenderOwnerDetails(ownerId) {
       ownerStr + unitDivs;
   } catch (err) {
     //TODO; Handle errors correctly
-    //TODO Remove in production?
     console.error("Could not fetch owner: " + err);
+    const contentDiv = document.getElementById("owner-details-content");
+    handleFetchError(fetchAndRenderOwnerDetails, retryCount, contentDiv);
   }
 }
 
@@ -168,8 +172,8 @@ function displayUpdateModal(ownerId) {
   });
 }
 
-window.onclick = function (event) {
-  if (event.target == document.getElementById("owner-details-modal")) {
+function closeModal(evt) {
+  if (evt.target == document.getElementById("owner-details-modal")) {
     document.getElementById("owner-details-modal").style.display = "none";
   }
-};
+}
