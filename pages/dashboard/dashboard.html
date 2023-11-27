@@ -1,11 +1,32 @@
 <div class="template">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <h1>Dashboard</h1>
     <p id="welcome-text"></p>
     <div id="dashboard-grid">
-        <div class="statistics-box"></div>
-        <div class="cleaning-box"></div>
-        <div class="task-box"></div>
-        <div class="personel-box"></div>
-
+        <div class=dashboard-item id="task-box">
+            <h2>Opgaver</h2>
+            <canvas id="myChart" style="width:100%;max-width:650px;"></canvas>
+            <h2 id="donut-inner-text">50%</h2>
+        </div>
+    
+        <div class=dashboard-item id="cleaning-box">
+            <h2>Rengøring</h2>
+            <div id="cleaning-data-box"></div>
+        </div>
+    
+        <div class=dashboard-item id="overview-box">
+            <h2>Overblik</h2>
+            <div id="overview-data-box"></div>
+        </div>
+    
+        <div class=dashboard-item id="personel-box">
+            <h2>Personale</h2>
+            <div id="personel-data-box"></div>
+        </div>
+        
+        <div class="dashboard-item" id="some-id-idk" style="grid-area:five;">
+            <h2>Random items?</h2>
+        </div>
     </div>
 </div>

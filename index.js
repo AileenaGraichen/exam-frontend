@@ -26,8 +26,7 @@ window.addEventListener("load", async () => {
       },
     })
     .on({
-      "/": () => renderHtml(templateHome, "content"),
-      "/dashboard": () => {
+      "/": () => {
         renderHtml(templateDashboard, "content")
         initDashboard()
       },
