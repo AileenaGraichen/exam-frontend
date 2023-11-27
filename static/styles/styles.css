@@ -1,0 +1,294 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
+
+:root {
+  --heading: "Geneva", 900;
+  --sub-heading: "Helvetica", 700;
+  --text: "Helvetica", 400;
+  --background-color: rgb(245, 199, 167);
+  --complementary-color: rgb(251, 225, 201); /*boxes/elements*/
+  --primary-color: rgb(250, 244, 235); /*text*/
+  --secondary-color: rgb(49, 35, 6); /*subtext*/
+  --off-color: rgb(108, 162, 242); /*accent-color(button)*/
+  --box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+  --border: 1px solid rgba(255, 255, 255, 0.02);
+  --border-radius: 10px;
+}
+
+/* CSS Resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background-color);
+}
+
+h1 {
+  color: var(--primary-color);
+}
+
+/* TODO Find a better solution for margin -10*/
+
+#hero{
+  margin: -8rem;
+}
+
+.login-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  background-color: var(--complementary-color);
+  box-shadow: var(--box-shadow);
+  border: var(--border);
+  border-radius: var(--border-radius);
+}
+
+button {
+  color: var(--primary-color);
+  background-color: var(--off-color);
+}
+
+label {
+  color: var(--secondary-color);
+}
+
+.location-box {
+  display: flex;
+  background-color: var(--complementary-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: var(--border);
+  margin: 1rem 0 1rem 0;
+  padding: 1rem;
+  justify-content: center;
+}
+
+.pagination-outer {
+  text-align: center;
+}
+.pagination {
+  background: var(--complementary-color);
+  font-family: "Noto Sans", sans-serif;
+  padding: 20px 30px;
+  display: inline-flex;
+  border-radius: 50px;
+  box-shadow: var(--box-shadow);
+  position: relative;
+  list-style: none;
+  white-space: nowrap;
+}
+
+.pagination li {
+  display: inline-block; /* Display list items horizontally */
+  margin-right: 5px; /* Adjust the spacing between items */
+}
+
+.pagination li a.page-link {
+  color: var(--primary-color);
+  background-color: var(--complementary-color);
+  font-size: 20px;
+  text-align: center;
+  line-height: 45px;
+  height: 45px;
+  width: 45px;
+  padding: 0;
+  margin: 0 12px 0 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  position: relative;
+  flex-grow: 1;
+}
+.pagination li.active a.page-link,
+.pagination li a.page-link:hover,
+.pagination li.active a.page-link:hover {
+  color: var(--complementary-color);
+  border: none;
+}
+.pagination li:first-child a.page-link {
+  border-radius: 40px 0 0 40px;
+}
+.pagination li:last-child a.page-link {
+  margin-right: 0;
+  border-radius: 0 40px 40px 0;
+}
+.pagination li a.page-link:before {
+  content: "";
+  background-color: var(--off-color);
+  height: 0;
+  width: 100%;
+  filter: blur(10px);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  transition: all 0.3s;
+}
+.pagination li.active a.page-link:before,
+.pagination li a.page-link:hover:before,
+.pagination li.active a.page-link:hover:before {
+  height: 100%;
+  filter: blur(0);
+}
+@media only screen and (max-width: 767px) {
+  .pagination {
+    padding: 10px;
+    margin: 0;
+    border-radius: 30px;
+    display: block;
+  }
+  .pagination li {
+    display: inline-block;
+    margin: 0 0 5px;
+  }
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* ################################# SPINNER ################################# */
+#loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50
+}
+
+
+/*---------DASHBOARD--------*/
+#dashboard-grid{
+  display:grid;
+  grid-column-gap:40px;
+  grid-row-gap:20px;
+  width:1500px;
+  height:1000px;
+  border: 1px solid green;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas:
+  "one two three"
+  "four four three"
+  "five five five"
+}
+
+@media(max-width:1500px){
+  #dashboard-grid{
+    width:1200px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-areas:
+    "one two"
+    "four three"
+    "four three"
+    "five five"
+  }
+}
+@media(max-width:1200px){
+  #dashboard-grid{
+    max-width:900px;
+    width:auto;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 0;
+    grid-template-areas:
+    "one"
+    "two"
+    "three"
+    "four"
+    "five"
+  }
+}
+.dashboard-item{
+  border-radius: var(--border-radius);
+  padding: 5px 0 0 15px;
+  cursor:pointer;
+  border: 1px solid green;
+}
+
+
+#task-box{
+  grid-area:one;
+  position: relative;
+}
+
+#donut-inner-text{
+  font-size:50px;
+  width:auto;
+  height:auto;
+  position: absolute;
+  z-index:5000;
+  margin: -55% 0 0 35%;
+}
+
+#cleaning-box{
+  grid-area:two;
+}
+#overview-box{
+ 
+  grid-area:three;
+}
+#personel-box{
+  
+  grid-area:four;
+}
+
+.dashboard-data-list{
+  width:90%;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: var(--complementary-color);
+  margin-bottom: 15px;  
+}
+
+.dashboard-data-list:first-child{
+  margin-top:30px;
+}
+.dashboard-data-list h4{
+  text-overflow: ellipsis;
+  overflow: hidden; 
+  white-space: nowrap;
+}
