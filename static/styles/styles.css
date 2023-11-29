@@ -353,3 +353,18 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+#cleaningplan-outerbox{
+  
+}
+.cleanplan-box{
+  float:left;
+  height:200px;
+  width:200px;
+  border:1px solid black;
+  border-radius: var(--border-radius);
+  margin: 0 20px 20px 0px;
+  overflow-wrap: break-word;
+}
+#switch-button-text{
+  font-weight:700;
+}
