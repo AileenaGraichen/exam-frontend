@@ -27,6 +27,9 @@ window.addEventListener("load", async () => {
     "./pages/manageOwners/ownerDetails.html"
   );
   const templateUnits = await loadHtml("./pages/manageUnits/units.html");
+  const templateUnitDetails = await loadHtml(
+    "./pages/manageUnits/unitDetails.html"
+  );
   const templateDashboard = await loadHtml("./pages/dashboard/dashboard.html")
 
 
@@ -54,6 +57,11 @@ window.addEventListener("load", async () => {
       "/unit": (match) => {
         renderHtml(templateUnits, "content");
         initUnits(match);
+      },
+
+      "/unit-details": (match) => {
+        renderHtml(templateUnitDetails, "content");
+        initUnitDetails(match);
       },
 
       "/accounts": () => {

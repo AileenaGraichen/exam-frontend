@@ -101,15 +101,6 @@ function displayData(units) {
     document.getElementById("unit-table-rows").innerHTML = tableRows;
 }
 
-/*function displayPagination(totalPages, currentPage) {
-    let paginationHtml = "";
-    if (currentPage > 0) {
-        paginationHtml += `<li class="page-item"><a class="page-link" data-page="${currentPage - 1}" href="#">Previous</a></li>`;
-    }
-    paginationHtml += `<li class="page-item active"><a class="page-link" data-page="${currentPage}" href="#">${currentPage + 1}</a></li>`;
-    document.getElementById("pagination").innerHTML = paginationHtml;
-}*/
-
 function displayPagination(totalPages, currentPage) {
     let paginationElement = document.getElementById("pagination");
     console.log("Pagination Element:", paginationElement); 
@@ -121,7 +112,7 @@ function displayPagination(totalPages, currentPage) {
         currentPage - 1
       }" href="#">«</a></li>`;
     }
-    // Display page numbers
+
     let startPage = Math.max(0, currentPage - 2);
     let endPage = Math.min(totalPages - 1, currentPage + 2);
   
@@ -163,6 +154,8 @@ function setupUnitEventHandlers() {
     };
     document.getElementById("unit-table-rows").onclick = unitDetails;
 }
+
+
 
 function isMobile() {
     const regex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
