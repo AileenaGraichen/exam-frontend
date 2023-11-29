@@ -10,7 +10,8 @@ import { initAccountDetails } from "./pages/manageAccounts/accountDetails.js";
 import { initManageOwners } from "./pages/manageOwners/owners.js";
 import { initOwnerDetails } from "./pages/manageOwners/ownerDetails.js";
 import { initUnits } from "./pages/manageUnits/units.js";
-import {initDashboard} from "./pages/dashboard/dashboard.js";
+import { initUnitDetails } from "./pages/manageUnits/unitDetails.js";
+import { initDashboard} from "./pages/dashboard/dashboard.js";
 
 window.addEventListener("load", async () => {
   const templateLogin = await loadHtml("./pages/login/login.html");

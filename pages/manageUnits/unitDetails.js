@@ -6,12 +6,23 @@ import {
 
 const URL = API_URL + "/unit";
 let unit;
-
+/* OURS
 export async function initUnitDetails(match) {
   if (match?.params?.id) {
     const id = match.params.id;
     document.getElementById("unit-details-content").innerHTML = "";
     fetchAndRenderUnitDetails(id);
+  }
+  document.getElementById("unit-details-content").onclick = manageUnit;
+} */
+
+export async function initUnitDetails() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const unitId = urlParams.get("id");
+
+  if (unitId) {
+      document.getElementById("unit-details-content").innerHTML = "";
+      fetchAndRenderUnitDetails(unitId);
   }
   document.getElementById("unit-details-content").onclick = manageUnit;
 }
