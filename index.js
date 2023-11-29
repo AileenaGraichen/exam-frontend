@@ -12,7 +12,7 @@ import { initOwnerDetails } from "./pages/manageOwners/ownerDetails.js";
 import { initUnits } from "./pages/manageUnits/units.js";
 import {initDashboard} from "./pages/dashboard/dashboard.js";
 
-window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("load", async () => {
   const templateLogin = await loadHtml("./pages/login/login.html");
   const templateHome = await loadHtml("./pages/home/home.html");
   const templateLocations = await loadHtml("./pages/location/location.html");
