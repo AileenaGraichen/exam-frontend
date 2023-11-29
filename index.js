@@ -11,6 +11,7 @@ import { initManageOwners } from "./pages/manageOwners/owners.js";
 import { initOwnerDetails } from "./pages/manageOwners/ownerDetails.js";
 import { initUnits } from "./pages/manageUnits/units.js";
 import {initDashboard} from "./pages/dashboard/dashboard.js";
+import { initCleanplan } from "./pages/cleanplan/cleanplan.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const templateLogin = await loadHtml("./pages/login/login.html");
@@ -28,7 +29,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   );
   const templateUnits = await loadHtml("./pages/manageUnits/units.html");
   const templateDashboard = await loadHtml("./pages/dashboard/dashboard.html")
-
+  const templateCleaningPlan = await loadHtml("./pages/cleanplan/cleanplan.html")
 
   const router = new Navigo("/", { hash: true });
   window.router = router;
@@ -71,6 +72,10 @@ window.addEventListener("DOMContentLoaded", async () => {
       "/owner-details": (match) => {
         renderHtml(templateOwnerDetails, "content");
         initOwnerDetails(match);
+      },
+      "/cleanplan": () => {
+        renderHtml(templateCleaningPlan, "content");
+        initCleanplan();
       },
       "/login": () => {
         renderHtml(templateLogin, "content");
