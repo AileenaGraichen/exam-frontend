@@ -12,13 +12,11 @@ export function initUnits() {
 
     if (!isInitialized) {
         isInitialized = true;
-        document.addEventListener("DOMContentLoaded", () => {
-            // Ensure the element exists before adding the event listener
-            const paginationElement = document.getElementById("pagination");
-            if (paginationElement) {
-                paginationElement.addEventListener("click", handlePaginationClick);
-            }
-        });
+        // Ensure the element exists before adding the event listener
+        const paginationElement = document.querySelector(".pagination");
+        if (paginationElement) {
+            paginationElement.addEventListener("click", handlePaginationClick);
+        }
     }
 
     if (locationId) {
@@ -30,7 +28,7 @@ export function initUnits() {
 
 async function fetchUnits(page = 0) {
     let data;
-    const size = 10; 
+    const size = 5; 
     try {
         if (isMobile()) {
             data = await fetch(
@@ -42,12 +40,18 @@ async function fetchUnits(page = 0) {
             data = await fetch(`${URL}${queryString}`,
             makeOptions("GET", null, true)
             ).then(handleHttpErrors);
-            
         }
 
         displayData(data.content);
         displayPagination(data.totalPages, page);
         setupUnitEventHandlers();
+
+        // Check if it's a wide screen or desktop
+        if (window.innerWidth >= 1024) {
+            document.querySelector(".pagination").style.display = "flex";
+        } else {
+            document.querySelector(".pagination").style.display = "none";
+        }
     } catch (error) {
         console.error(error);
     }
@@ -55,7 +59,7 @@ async function fetchUnits(page = 0) {
 
 async function fetchUnitsByLocationId(page = 0, locationId) {
     let data;
-    const size = 10;
+    const size = 5;
     try {
         if (isMobile()) {
             data = await fetch(
@@ -70,6 +74,14 @@ async function fetchUnitsByLocationId(page = 0, locationId) {
         displayData(data.content);
         displayPagination(data.totalPages, page);
         setupUnitEventHandlers();
+        
+        // Check if it's a wide screen or desktop
+        if (window.innerWidth >= 1024) {
+            document.querySelector(".pagination").style.display = "flex";
+        } else {
+            document.querySelector(".pagination").style.display = "none";
+        }
+        
     } catch (error) {
         console.error(error);
     }
@@ -89,16 +101,10 @@ function displayData(units) {
     document.getElementById("unit-table-rows").innerHTML = tableRows;
 }
 
-/*function displayPagination(totalPages, currentPage) {
-    let paginationHtml = "";
-    if (currentPage > 0) {
-        paginationHtml += `<li class="page-item"><a class="page-link" data-page="${currentPage - 1}" href="#">Previous</a></li>`;
-    }
-    paginationHtml += `<li class="page-item active"><a class="page-link" data-page="${currentPage}" href="#">${currentPage + 1}</a></li>`;
-    document.getElementById("pagination").innerHTML = paginationHtml;
-}*/
-
 function displayPagination(totalPages, currentPage) {
+    let paginationElement = document.getElementById("pagination");
+    console.log("Pagination Element:", paginationElement); 
+
     let paginationHtml = "";
     if (currentPage > 0) {
       // Previous Page
@@ -106,7 +112,7 @@ function displayPagination(totalPages, currentPage) {
         currentPage - 1
       }" href="#">«</a></li>`;
     }
-    // Display page numbers
+
     let startPage = Math.max(0, currentPage - 2);
     let endPage = Math.min(totalPages - 1, currentPage + 2);
   
@@ -127,16 +133,16 @@ function displayPagination(totalPages, currentPage) {
         currentPage + 1
       }" href="#">»</a></li>`;
     }
-    document.getElementById("pagination").innerHTML = paginationHtml;
+    document.querySelector(".pagination").innerHTML = paginationHtml;
   }
 
-function handlePaginationClick(evt) {
-    const clicked = evt.target;
-    if (clicked.dataset.page) {
-        const page = clicked.dataset.page;
-        fetchUnits(Number(page));
+  function handlePaginationClick(evt) {
+    evt.preventDefault();
+    if (evt.target.tagName === "A" && evt.target.hasAttribute("data-page")) {
+      const page = parseInt(evt.target.getAttribute("data-page"));
+      fetchUnits(page);
     }
-}
+  }
 
 function setupUnitEventHandlers() {
     const unitDetails = (evt) => {
@@ -148,6 +154,8 @@ function setupUnitEventHandlers() {
     };
     document.getElementById("unit-table-rows").onclick = unitDetails;
 }
+
+
 
 function isMobile() {
     const regex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
