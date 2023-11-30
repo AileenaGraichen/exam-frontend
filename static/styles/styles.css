@@ -320,6 +320,7 @@ label {
   .box:nth-child(5) {
     grid-column: span 1; /* Revert span to 1 column for smaller screens */
   }
+}
 /* ============CLEANING=============*/
 .switch {
   position: relative;
