@@ -23,8 +23,6 @@ async function renderAccounts(retryCount = 0) {
       handleHttpErrors
     );
 
-    console.log(accounts);
-
     const accountDiv = accounts
       .map((account) => {
         return ` <div class="user-box">
