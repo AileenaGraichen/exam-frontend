@@ -7,30 +7,39 @@ import {
 const URL = API_URL + "/unit";
 let unit;
 
-export async function initUnitDetails(match) {
+export function initUnitDetails(match) {
   if (match?.params?.id) {
+    console.log('Unit ID:', match.params.id); // Log the unit ID
     const id = match.params.id;
     document.getElementById("unit-details-content").innerHTML = "";
-    fetchAndRenderUnitDetails(id);
+      fetchAndRenderUnitDetails(id);
   }
+/*
+  console.log(window.location.search)
+  const urlParams = new URLSearchParams(window.location.search);
+  const unitId = urlParams.get("unitId");
+  console.log('Unit ID:', unitId); // Log the unit ID*/
+ 
   document.getElementById("unit-details-content").onclick = manageUnit;
 }
 
+
 async function fetchAndRenderUnitDetails(unitId) {
   try {
-    unit = await fetch(
-      `${URL}/${unitId}`,
-      makeOptions("GET", null, true)
-    ).then(handleHttpErrors);
 
-    const unitDetailsHTML = generateUnitDetailsHTML(unit);
-    document.getElementById("unit-details-content").innerHTML = unitDetailsHTML;
+      console.log('Fetching unit details...');
+
+      unit = await fetch(`${URL}/oneunit/${unitId}`, makeOptions("GET", null, true)).then(handleHttpErrors);
+      console.log('Unit details:', unit); // Log the fetched unit data
+
+      const unitDetailsHTML = generateUnitDetailsHTML(unit);
+      document.getElementById("unit-details-content").innerHTML = unitDetailsHTML;
   } catch (err) {
-    console.error("Could not fetch unit: " + err);
-    // Handle errors appropriately (e.g., display an error message)
+      console.error("Could not fetch unit: " + err);
+      
   }
 }
-
+/*
 function generateUnitDetailsHTML(unit) {
   return `
     <div class="unit-info-box">
@@ -38,8 +47,22 @@ function generateUnitDetailsHTML(unit) {
       <p class="unit-status">Status: ${unit.status}</p>
       <p class="unit-type">Type: ${unit.type}</p>
       <!-- Add other unit details as needed -->
-    </div>`;
-}
+    </div>`;*/
+
+    function generateUnitDetailsHTML(unit) {
+      console.log('Unit:', unit); // Log the entire unit object for reference
+      console.log('Unit Number:', unit.unitNumber); // Log unitNumber
+      console.log('Status:', unit.status); // Log status
+      console.log('Type:', unit.type); // Log type
+    
+      return `
+        <div class="unit-info-box">
+          <p class="unit-number">Unit Number: ${unit.unitNumber}</p>
+          <p class="unit-status">Status: ${unit.status}</p>
+          <p class="unit-type">Type: ${unit.type}</p>
+          <!-- Add other unit details as needed -->
+        </div>`;
+    }
 
 async function manageUnit(evt) {
     const clicked = evt.target;
