@@ -91,7 +91,7 @@ window.addEventListener("load", async () => {
       "/maintenance": () => {
         renderHtml(templateMaintenance, "content");
         initMaintenance();
-
+      },
       "/cleanplan": () => {
         renderHtml(templateCleaningPlan, "content");
         initCleanplan();

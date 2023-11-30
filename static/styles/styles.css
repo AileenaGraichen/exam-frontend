@@ -381,9 +381,7 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-#cleaningplan-outerbox{
-  
-}
+
 .cleanplan-box{
   float:left;
   height:200px;
@@ -395,4 +393,20 @@ input:checked + .slider:before {
 }
 #switch-button-text{
   font-weight:700;
+}
+#cleanplan-modal-flexbox{
+  display:flex;
+}
+#cleanplan-modal-flexbox select{
+  overflow-y: auto;
+  width:100%;
+}
+#cleanplan-modal-flexbox button{
+  display:block;
+}
+
+.cleanplan-column{
+  width: 300px;
+  height:500px;
+  border: 1px solid black;
 }
