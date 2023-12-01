@@ -15,7 +15,6 @@ import { initMaintenance } from "./pages/maintenance/maintenance.js";
 import { initUnitDetails } from "./pages/manageUnits/unitDetails.js";
 import { initCleanplan } from "./pages/cleanplan/cleanplan.js";
 
-
 window.addEventListener("load", async () => {
   const templateLogin = await loadHtml("./pages/login/login.html");
   const templateHome = await loadHtml("./pages/home/home.html");
@@ -38,7 +37,9 @@ window.addEventListener("load", async () => {
   const templateUnitDetails = await loadHtml(
     "./pages/manageUnits/unitDetails.html"
   );
-  const templateCleaningPlan = await loadHtml("./pages/cleanplan/cleanplan.html")
+  const templateCleaningPlan = await loadHtml(
+    "./pages/cleanplan/cleanplan.html"
+  );
 
   const router = new Navigo("/", { hash: true });
   window.router = router;
@@ -91,11 +92,10 @@ window.addEventListener("load", async () => {
       "/maintenance": () => {
         renderHtml(templateMaintenance, "content");
         initMaintenance();
-
+      },
       "/cleanplan": () => {
         renderHtml(templateCleaningPlan, "content");
         initCleanplan();
-
       },
       "/login": () => {
         renderHtml(templateLogin, "content");

@@ -24,10 +24,9 @@ export async function initMaintenance() {
 }
 
 async function renderMaintenance(retryCount = 0, searchValue = "") {
-  const addButton = `<button id="add-maintenance-task">Tilføj Opgave</button>`;
-
   searchValue = searchValue ? "/search/" + searchValue : "";
-
+  document.getElementById("maintenance-content").innerHTML =
+    sanitizeStringWithTableRows(table);
   try {
     let tasks = await fetch(
       URL + searchValue,
@@ -38,8 +37,8 @@ async function renderMaintenance(retryCount = 0, searchValue = "") {
       ? tasks.content.map(generateHTML).join("")
       : tasks.map(generateHTML).join("");
 
-    document.getElementById("maintenance-content").innerHTML =
-      addButton + maintenanceDivs;
+    document.getElementById("tbody-maintenance").innerHTML =
+      sanitizeStringWithTableRows(maintenanceDivs);
     document.getElementById("add-maintenance-task").onclick =
       displayAddTaskModal;
     //TODO add button event
@@ -108,25 +107,12 @@ function displayAddTaskModal() {
   const createBtn = document.getElementById("create-task-btn");
   createBtn.addEventListener("click", async () => {
     await createMaintenanceTask();
-    //modal.style.display = "none";
-    //renderMaintenance();
+    modal.style.display = "none";
+    renderMaintenance();
   });
 }
 
 async function createMaintenanceTask() {
-  //preventDefault();
-  //const formData = new FormData(document.getElementById("maintenanceTaskForm"));
-
-  /* const body = {
-    title: formData.get("title"),
-    description: formData.get("description"),
-    status: formData.get("status"),
-    priority: formData.get("priority"),
-    image: formData.get("image"),
-    accountUsername: formData.get("account"),
-    unitId: formData.get("unit"),
-  };
-  console.log(body); */
   const taskTitleInput = document.getElementById("task-title").value;
   const taskDescriptionInput =
     document.getElementById("task-description").value;
@@ -141,7 +127,10 @@ async function createMaintenanceTask() {
   formData.append("description", taskDescriptionInput);
   formData.append("status", taskStatusSelect);
   formData.append("priority", taskPrioritySelect);
-  formData.append("image", taskImageInput);
+  if (taskImageInput) {
+    // Check if a file is selected
+    formData.append("image", taskImageInput);
+  }
   formData.append("accountUsername", taskAccountInput);
   formData.append("unitId", taskUnitInput);
 
@@ -169,16 +158,32 @@ const generateHTML = (task) => {
   }
 
   return `
-    <div class="maintenance-box">
-      <p class="maintenance-title">${task.title}</p>
-      <p class="maintenance-description">${task.description}</p>
-      <p class="maintenance-status">${task.status}</p>
-      <p class="maintenance-priority">${task.priority}</p>
-      <p class="maintenance-account-assigned">${task.account.userName}</p>
-      <p class="maintenance-unit">${task.unit.unitNumber}</p>
-      <p class="maintenance-created">${task.created}</p>
-      ${imageTag}
-      <button id="maintenance-details_${task.id}">Detaljer</button>
-    </div>
-  `;
+  
+      <tr>
+        <td>${task.unitId}</td>
+        <td>${task.title}</td>
+        <td>${task.description}</td>
+        <td>${task.status}</td>
+        <td>${task.priority}</td>
+        <td>${task.accountUsername}</td>
+        <td>${task.created}</td>
+        <td><button id="maintenance-details_${task.id}">Detaljer</button></td>
+      </tr>
+    `;
 };
+
+const table = `<table class="table">
+<thead>
+  <tr>
+    <th>Hus/Lejlighed</th>
+    <th>Title</th>
+    <th>Beskrivelse</th>
+    <th>Status</th>
+    <th>Prioritet</th>
+    <th>Tildelt</th>
+    <th>Oprettet</th>
+    <th>Info</th>
+  </tr>
+</thead>
+<tbody id="tbody-maintenance"></tbody>
+</table>`;
