@@ -28,15 +28,16 @@ async function fetchCleanplanData(){
     try {
         planData = await fetch(`${API_URL}/user-with-role`, makeOptions("GET", null, true)).then(handleHttpErrors)
         unitData = await fetch(`${API_URL}/unit`, makeOptions("GET", null, true)).then(handleHttpErrors)
+        setupPlanData(planData);
+        setupUnitData(unitData.content);
+        updatePlanView();
+        setupEventHandlers();
+        setupAvailableUnitsList(unitData.content)
     } catch (error) {
         console.error(error);
         //handleFetchError(fetchCleanplanData, 0, cleanPlanBox)
     }
-    setupPlanData(planData);
-    setupUnitData(unitData.content);
-    updatePlanView();
-    setupEventHandlers();
-    setupAvailableUnitsList(unitData.content)
+    
 }
 
 function setupAvailableUnitsList(data){
@@ -81,13 +82,14 @@ function addCleanplanModal(){
 
 
 function editCleanPlan(){
-    if(!document.getElementById("users-dropdown").value){
-        document.querySelector(".cleaningplan-modal-errortext").innerText = "Udfyld venligst alt informationen"
-        return
-    }
-    chosenDate = document.getElementById("cleanplan-add-date-selector").value;
-    chosenUser = document.getElementById("users-dropdown").value;
     const modal = document.getElementById("cleaning-plan-modal");
+    if(modal.style.display == "block"){
+        chosenDate = document.getElementById("cleanplan-add-date-selector").value;
+        chosenUser = document.getElementById("users-dropdown").value;
+    }
+    modal.style.display = "block"
+
+    
     const editCleanplanWindows = `<span class="close">&times;</span>
     <div id="cleanplan-modal-flexbox">
         <div class="cleanplan-column"  id="cleanplan-left-column">
@@ -100,7 +102,7 @@ function editCleanPlan(){
             <button id="move-data-left-button"> < </button>
         </div>
         <div class="cleanplan-column" id="cleanplan-right-column">
-        <select id="current-cleanplan-list" name="current-cleanplan-list" size="20" multiple style="overflow-y: auto;"></select>
+        <select id="current-cleanplan-list" name="current-cleanplan-list" size="20" multiple></select>
 
         </div>
     </div>
@@ -118,28 +120,28 @@ function editCleanPlan(){
     
 }
 async function submitCleaningPlanChanges(){
-    const inputDate = new Date(chosenDate);
-    const formattedInputDate = `${inputDate.getDate().toString().padStart(2, '0')}-${(inputDate.getMonth() + 1).toString().padStart(2, '0')}-${inputDate.getFullYear()}`;
     try {
         //Use the 2 lists, with the date, and chosen user, to create cleaningplanrequests
         const postList = currentCleaningPlan.map(unit => ({
             unitId: unit.id,
             userName: chosenUser,
-            date: formattedInputDate
+            date: chosenDate
         }));
         
         const deleteList = availableUnitsList.map(unit => ({
             unitId: unit.id,
             userName: chosenUser,
-            date: formattedInputDate
+            date: chosenDate
         }));
+        console.log(postList)
+        console.log(deleteList)
+        document.getElementById("cleaning-plan-modal").style.display = "none";
         await fetch(`${API_URL}/cleaning`, makeOptions("POST", postList , true))
         await fetch(`${API_URL}/cleaning`, makeOptions("DELETE", deleteList , true))
-        document.getElementById("cleaning-plan-modal").style.display = "none";
-        fetchCleanplanData()
     } catch (error) {
         console.error(error)
     }
+    fetchCleanplanData()
 }
 
 function getSelectedOptions(columnId, evt) {
@@ -280,22 +282,30 @@ function handleCleaningPlanClick(event){
     if(clickedId.startsWith("clean_user_")){
         const userId = idSegments[2];
         const cleaningDate = idSegments[3];
+        chosenUser = userId;
+        chosenDate = cleaningDate;
+        fetchCleaningPlansByUserAndDate(userId, cleaningDate)
     }
     if(clickedId.startsWith("clean_unit_")){
         const unitId = idSegments[2];
         const cleaningDate = idSegments[3];
     }
 }
-function getParentDivId(element) {
-    let parent = element;
-    while (parent) {
-        if (parent.classList.contains('cleanplan-box')) {
-            return parent.id;
-        }
-        parent = parent.parentNode;
+
+async function fetchCleaningPlansByUserAndDate(userId, cleaningDate){
+    try {
+        const data = await fetch(`${API_URL}/cleaning/${userId}/${cleaningDate}`,makeOptions("GET", null, true)).then(handleHttpErrors)
+        const unitIdsFromCleaningPlans = data.map(plan => plan.unitId)
+        currentCleaningPlan = allUnits.filter(unit => unitIdsFromCleaningPlans.includes(unit.id));
+        availableUnitsList = availableUnitsList.filter(unit => !unitIdsFromCleaningPlans.includes(unit.id));
+    } catch (error) {
+        console.error(error);
     }
-    return null; // Return null if the element with the specified class is not found
+    editCleanPlan()
 }
+
+
+
 
 
 function filterUniqueDates(user) {
@@ -326,4 +336,14 @@ function filterUniqueDates(user) {
         // Return false for users who have a plan on the specified date
         return !hasPlanOnDate;
     });
+}
+function getParentDivId(element) {
+    let parent = element;
+    while (parent) {
+        if (parent.classList.contains('cleanplan-box')) {
+            return parent.id;
+        }
+        parent = parent.parentNode;
+    }
+    return null; // Return null if the element with the specified class is not found
 }
