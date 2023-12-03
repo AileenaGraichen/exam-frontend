@@ -5,6 +5,10 @@ import { handleFetchError } from "../../utils.js";
 let cleanPlanData;
 let unitCleanData;
 let cleanPlanBox;
+
+let cleanPlanRawData;
+let unitRawData;
+
 let allUnits;
 let chosenDate;
 let chosenUser;
@@ -23,35 +27,68 @@ export function initCleanplan(){
 }
 
 async function fetchCleanplanData(){
-    let planData;
+    let cleanPlanData;
     let unitData;
     try {
-        planData = await fetch(`${API_URL}/user-with-role`, makeOptions("GET", null, true)).then(handleHttpErrors)
+        cleanPlanRawData = await fetch(`${API_URL}/cleaning`, makeOptions("GET", null, true)).then(handleHttpErrors)
         unitData = await fetch(`${API_URL}/unit`, makeOptions("GET", null, true)).then(handleHttpErrors)
-        setupPlanData(planData);
-        setupUnitData(unitData.content);
+        unitRawData = unitData.content;
+        setupPlanData(cleanPlanRawData);
+        setupUnitData(unitRawData);
         updatePlanView();
         setupEventHandlers();
-        setupAvailableUnitsList(unitData.content)
+        setupAvailableUnitsList(unitRawData)
     } catch (error) {
         console.error(error);
         //handleFetchError(fetchCleanplanData, 0, cleanPlanBox)
     }
     
 }
-
-function setupAvailableUnitsList(data){
-    if(data){
-        allUnits = data;
-    }
-    availableUnitsList = []
-    allUnits.map((unit) => {
-        if(unit.status == "AVAILABLE"){
-            return availableUnitsList.push(unit);
-        }
-        return null;
-    })
+function setupPlanData(plans){
+    let filteredPlans = filterUniqueByDateAndUser(plans)
+    let sortedPlans = sortByDate(filteredPlans)
+    console.log(sortedPlans)
+    cleanPlanData = sortedPlans.map(plan => 
+    `<div class="cleanplan-box" id="clean_user_${plan.userName}_${plan.date}">
+        <h3>${plan.date}</h3>
+        <h4>${plan.userName}</h4>
+        <button class="cleanplan-open-button">Se Plan</button>
+    </div>
+    `).join('');
 }
+function setupUnitData(units) {
+    unitCleanData = units.map(unit => {
+        let cleaningPlansInfo = "";
+        let cleaningPlanDate = "";
+        let cleaningButton = "";
+        if (unit.cleaningPlans.length === 0) {
+            cleaningPlansInfo = "<h5>No cleaning scheduled</h5>";
+        } else {
+            // Assuming you want to display the first date if available
+            cleaningPlansInfo = `<h5>${unit.cleaningPlans[0].date}</h5>`;
+            cleaningPlanDate = `${unit.cleaningPlans[0].date}`
+            cleaningButton = `<button class="cleanplan-open-button">Se Plan</button>`
+        }
+        return `<div class="cleanplan-box" id="clean_unit_${unit.id}_${cleaningPlanDate}">
+                    <h4>${unit.location.address} ${unit.unitNumber}</h4>
+                    <h5>${unit.status}</h5>
+                    ${cleaningPlansInfo}
+                    ${cleaningButton}
+                </div>`;
+    }).join('');
+}
+
+
+//fetch users for later use
+async function fetchUserList(){
+    try {
+        const data = await fetch(`${API_URL}/user-with-role`, makeOptions("GET", null, true)).then(handleHttpErrors);
+        userList = data;
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 
 //Liste til venstre der viser available units, skal have alle feriestederne stående. 
 //Når der så laves div eller andet element af hver unit der er ledig, skal den tildeles ud fra lokationen den er tildelt til. Og smides som inner divs i det feriested, som kan bruges som drop down menu.
@@ -91,8 +128,11 @@ function editCleanPlan(){
 
     
     const editCleanplanWindows = `<span class="close">&times;</span>
+    <span>Dato: ${chosenDate} - Rengøringsperson: ${chosenUser}</span>
+    <br>
     <div id="cleanplan-modal-flexbox">
         <div class="cleanplan-column"  id="cleanplan-left-column">
+        <p>Mulige boliger</p>
             <select id="available-units-list" size="20" multiple>
         
             </select>
@@ -102,7 +142,8 @@ function editCleanPlan(){
             <button id="move-data-left-button"> < </button>
         </div>
         <div class="cleanplan-column" id="cleanplan-right-column">
-        <select id="current-cleanplan-list" name="current-cleanplan-list" size="20" multiple></select>
+        <p>Valgt Rengøringsplan</p>
+        <select id="current-cleanplan-list" size="20" multiple></select>
 
         </div>
     </div>
@@ -156,15 +197,7 @@ function getSelectedOptions(columnId, evt) {
     displayAvailableAndCurrentListOptions()
     
   }
-//fetch users for later use
-async function fetchUserList(){
-    try {
-        const data = await fetch(`${API_URL}/user-with-role`, makeOptions("GET", null, true)).then(handleHttpErrors);
-        userList = data;
-    } catch (error) {
-        console.error(error)
-    }
-}
+
 
 function updateAvailableAndCurrentList(options, clickedButton) {
     for (let i = 0; i < options.length; i++) {
@@ -192,11 +225,13 @@ function updateAvailableAndCurrentList(options, clickedButton) {
 function displayAvailableAndCurrentListOptions(){
     const leftColumn = document.getElementById("available-units-list");
     const rightColumn = document.getElementById("current-cleanplan-list");
-    leftColumn.innerHTML = availableUnitsList.map(unit => 
+    const groupedUnits = sortUnitsByLocation(availableUnitsList)
+    const groupedCleanplans = sortUnitsByLocation(currentCleaningPlan)
+    leftColumn.innerHTML = groupedUnits.map(unit => 
         `
         <option value="${unit.id}" >${unit.location.address}, ${unit.unitNumber}</option>
         `)
-        rightColumn.innerHTML = currentCleaningPlan.map(unit => 
+        rightColumn.innerHTML = groupedCleanplans.map(unit => 
         `
         <option value="${unit.id}" >${unit.location.address}, ${unit.unitNumber}</option>
         `
@@ -216,44 +251,8 @@ function addUsersToDropdown(){
     dropDownMenu.disabled = false;
 }
 
-function setupPlanData(plans){
-    const filteredData = plans.map(user => filterUniqueDates(user));
-    cleanPlanData = filteredData.map(user => {
-        const cleaningPlanBoxes = user.cleaningPlans.map(plan => {
-          return `<div class="cleanplan-box" id="clean_user_${user.userName}_${plan.date}">
-                      <h3>${plan.date}</h3>
-                      <h4>${user.userName}</h4>
-                      <button class="cleanplan-open-button">Se Plan</button>
-                  </div>`;
-        }).join(''); // Join the generated HTML elements for each date
-      
-        return cleaningPlanBoxes;
-      }).flat(); // Flatten the nested arrays into a single array
-      
-      // Join the generated HTML elements into a single string
-      cleanPlanData = cleanPlanData.join('');
-}
-function setupUnitData(units) {
-    unitCleanData = units.map(unit => {
-        let cleaningPlansInfo = "";
-        let cleaningPlanDate = "";
-        let cleaningButton = "";
-        if (unit.cleaningPlans.length === 0) {
-            cleaningPlansInfo = "<h5>No cleaning scheduled</h5>";
-        } else {
-            // Assuming you want to display the first date if available
-            cleaningPlansInfo = `<h5>${unit.cleaningPlans[0].date}</h5>`;
-            cleaningPlanDate = `${unit.cleaningPlans[0].date}`
-            cleaningButton = `<button class="cleanplan-open-button">Se Plan</button>`
-        }
-        return `<div class="cleanplan-box" id="clean_unit_${unit.id}_${cleaningPlanDate}">
-                    <h4>${unit.location.address} ${unit.unitNumber}</h4>
-                    <h5>${unit.status}</h5>
-                    ${cleaningPlansInfo}
-                    ${cleaningButton}
-                </div>`;
-    }).join('');
-}
+
+
 
 function updatePlanView(){
     let isChecked = document.getElementById("view-switcher").checked; //Kan checke switchen når der trykkes.
@@ -275,6 +274,19 @@ function setupEventHandlers(){
     })  
 }
 
+function setupAvailableUnitsList(data){
+    if(data){
+        allUnits = data;
+    }
+    availableUnitsList = []
+    allUnits.map((unit) => {
+        if(unit.status == "AVAILABLE"){
+            return availableUnitsList.push(unit);
+        }
+        return null;
+    })
+}
+
 function handleCleaningPlanClick(event){
     const clickedId = getParentDivId(event.target);
     const idSegments = clickedId.split('_');
@@ -294,8 +306,11 @@ function handleCleaningPlanClick(event){
 
 async function fetchCleaningPlansByUserAndDate(userId, cleaningDate){
     try {
-        const data = await fetch(`${API_URL}/cleaning/${userId}/${cleaningDate}`,makeOptions("GET", null, true)).then(handleHttpErrors)
-        const unitIdsFromCleaningPlans = data.map(plan => plan.unitId)
+        //const data = await fetch(`${API_URL}/cleaning/${userId}/${cleaningDate}`,makeOptions("GET", null, true)).then(handleHttpErrors)
+        const filteredCleaningPlans = cleanPlanRawData.filter(plan => {
+            return plan.userName === userId && plan.date === cleaningDate;
+        });
+        const unitIdsFromCleaningPlans = filteredCleaningPlans.map(plan => plan.unitId)
         currentCleaningPlan = allUnits.filter(unit => unitIdsFromCleaningPlans.includes(unit.id));
         availableUnitsList = availableUnitsList.filter(unit => !unitIdsFromCleaningPlans.includes(unit.id));
     } catch (error) {
@@ -303,22 +318,6 @@ async function fetchCleaningPlansByUserAndDate(userId, cleaningDate){
     }
     editCleanPlan()
 }
-
-
-
-
-
-function filterUniqueDates(user) {
-    const uniqueDates = [];
-    user.cleaningPlans = user.cleaningPlans.filter(plan => {
-      if (!uniqueDates.includes(plan.date)) {
-        uniqueDates.push(plan.date);
-        return true;
-      }
-      return false;
-    });
-    return user;
-  }
 
   function removeUsersByDate(users, userInputDate) {
     // Convert user input date to 'dd-mm-yyyy' format
@@ -346,4 +345,43 @@ function getParentDivId(element) {
         parent = parent.parentNode;
     }
     return null; // Return null if the element with the specified class is not found
+}
+
+function sortByDate(cleanPlans) {
+    return cleanPlans.sort((a, b) => {
+        const datePartsA = a.date.split('-').reverse().join('-');
+        const datePartsB = b.date.split('-').reverse().join('-');
+        return new Date(datePartsA) - new Date(datePartsB);
+    });
+}
+
+function filterUniqueByDateAndUser(cleanPlans) {
+    const uniqueCombinations = new Map();
+
+    return cleanPlans.filter(plan => {
+        const { date, userName } = plan;
+        const key = date + userName;
+
+        if (!uniqueCombinations.has(key)) {
+            uniqueCombinations.set(key, true);
+            return true;
+        }
+
+        return false;
+    });
+}
+
+function sortUnitsByLocation(units) {
+    return units.sort((a, b) => {
+        const locationA = a.location.id;
+        const locationB = b.location.id;
+        
+        if (locationA < locationB) {
+            return -1;
+        }
+        if (locationA > locationB) {
+            return 1;
+        }
+        return 0;
+    });
 }
