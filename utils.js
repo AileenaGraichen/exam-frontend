@@ -98,7 +98,7 @@ export function sanitizeStringWithTableRows(tableRows) {
   return secureRows;
 }
 
-export function makeOptions(method, body, addToken) {
+/* export function makeOptions(method, body, addToken) {
   const opts = {
     method: method,
     headers: {
@@ -112,6 +112,29 @@ export function makeOptions(method, body, addToken) {
   if (addToken && localStorage.getItem("token")) {
     opts.headers.Authorization = "Bearer " + localStorage.getItem("token");
   }
+  return opts;
+} */
+
+export function makeOptions(method, body, addToken) {
+  const opts = {
+    method: method,
+    headers: {},
+  };
+
+  // Check if the request includes a file (formData)
+  if (body instanceof FormData) {
+    opts.body = body;
+  } else if (body) {
+    // For non-file requests, use JSON content type
+    opts.headers["Content-Type"] = "application/json";
+    opts.headers["Accept"] = "application/json";
+    opts.body = JSON.stringify(body);
+  }
+
+  if (addToken && localStorage.getItem("token")) {
+    opts.headers.Authorization = "Bearer " + localStorage.getItem("token");
+  }
+
   return opts;
 }
 
@@ -134,3 +157,15 @@ export async function handleFetchError(retryFunction, retryCount, contentDiv) {
 export const loadingContent = `<div id="loading-spinner" class="spinner-border text-primary" role="status">
 <span class="sr-only"></span>
 </div>`;
+
+
+export function addClickableWithEnter(inputBoxId, buttonId){
+    const inputField = document.getElementById(inputBoxId);
+    const button = document.getElementById(buttonId);
+    inputField.addEventListener("keydown", (evt) => {
+      if(evt.key === 'Enter'){
+        button.click();
+      }
+    })
+
+}
