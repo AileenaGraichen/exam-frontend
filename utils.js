@@ -157,3 +157,15 @@ export async function handleFetchError(retryFunction, retryCount, contentDiv) {
 export const loadingContent = `<div id="loading-spinner" class="spinner-border text-primary" role="status">
 <span class="sr-only"></span>
 </div>`;
+
+
+export function addClickableWithEnter(inputBoxId, buttonId){
+    const inputField = document.getElementById(inputBoxId);
+    const button = document.getElementById(buttonId);
+    inputField.addEventListener("keydown", (evt) => {
+      if(evt.key === 'Enter'){
+        button.click();
+      }
+    })
+
+}
