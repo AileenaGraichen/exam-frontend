@@ -14,12 +14,7 @@ export function initUnitDetails(match) {
     document.getElementById("unit-details-content").innerHTML = "";
       fetchAndRenderUnitDetails(id);
   }
-/*
-  console.log(window.location.search)
-  const urlParams = new URLSearchParams(window.location.search);
-  const unitId = urlParams.get("unitId");
-  console.log('Unit ID:', unitId); // Log the unit ID*/
- 
+
   document.getElementById("unit-details-content").onclick = manageUnit;
 }
 
@@ -34,32 +29,50 @@ async function fetchAndRenderUnitDetails(unitId) {
 
       const unitDetailsHTML = generateUnitDetailsHTML(unit);
       document.getElementById("unit-details-content").innerHTML = unitDetailsHTML;
+
   } catch (err) {
       console.error("Could not fetch unit: " + err);
       
   }
 }
-/*
-function generateUnitDetailsHTML(unit) {
-  return `
-    <div class="unit-info-box">
-      <p class="unit-number">Unit Number: ${unit.unitNumber}</p>
-      <p class="unit-status">Status: ${unit.status}</p>
-      <p class="unit-type">Type: ${unit.type}</p>
-      <!-- Add other unit details as needed -->
-    </div>`;*/
 
     function generateUnitDetailsHTML(unit) {
+      const unitDetailsBox1 = document.getElementById("unit-details-box-1")
+      const unitDetailsBox2 = document.getElementById("unit-details-box-2")
+      const unitDetailsBox3 = document.getElementById("unit-details-box-3")
+      const unitDetailsBox4 = document.getElementById("unit-details-box-4")
+      const unitDetailsBox5 = document.getElementById("unit-details-box-5")
+      const unitDetailsBox6 = document.getElementById("unit-details-box-6")
+
+      unitDetailsBox1.innerHTML = `<p class="unit-location">Location: ${unit.location.locationName}</p>
+      <p class="unit-number">Unit Number: ${unit.unitNumber}</p>`
+      unitDetailsBox5.innerHTML = unit.cleaningPlans.map((plan) => `
+      <p class="unit-cleaning-plan-name">Cleaner: ${plan.userName}</p>
+      <p class="unit-cleaning-plan-date">Date: ${plan.date}</p>`)
+      .join("");
+
+      unitDetailsBox6.innerHTML = unit.maintenanceTasks.map((task) => `
+      <p class="unit-maintenance-tasks-account">Cleaner: ${task.account.userName}</p>
+      <p class="unit-maintenance-tasks-title">Titel: ${task.title}</p>
+      <p class="unit-maintenance-tasks-description">Beskrivelse: ${task.description}</p>
+      <p class="unit-maintenance-tasks-priority">Prioritæt: ${task.priority}</p>
+      <p class="unit-maintenance-tasks-status">Status: ${task.status}</p>`)
+      .join("");
+
       console.log('Unit:', unit); // Log the entire unit object for reference
       console.log('Unit Number:', unit.unitNumber); // Log unitNumber
       console.log('Status:', unit.status); // Log status
       console.log('Type:', unit.type); // Log type
+      console.log('Location:', unit.location.locationName); // Log location
+      console.log('Address:', unit.location.address); // Log location ID
+      
     
       return `
         <div class="unit-info-box">
           <p class="unit-number">Unit Number: ${unit.unitNumber}</p>
           <p class="unit-status">Status: ${unit.status}</p>
           <p class="unit-type">Type: ${unit.type}</p>
+          <p class="unit-location">Location: ${unit.location.locationName}</p>
           <!-- Add other unit details as needed -->
         </div>`;
     }
