@@ -35,8 +35,8 @@ async function fetchAndRenderOwnerDetails(ownerId, retryCount = 0) {
             <p class="owner-mobile">${owner.mobile}</p>
         </div>    
         <div class="owner-details-manage">
-            <button class="btn" id="owner-manage_update_${owner.id}">Update Info</button>
-            <button class="btn" id="owner-manage_delete_${owner.id}">Delete</button>
+            <button id="owner-manage_update_${owner.id}">Update Info</button>
+            <button id="owner-manage_delete_${owner.id}">Delete</button>
         </div>
     </div>`;
 
@@ -49,7 +49,7 @@ async function fetchAndRenderOwnerDetails(ownerId, retryCount = 0) {
         <p class="owner-unit-status">${unit.status}</p>
         <p class="owner-unit-type">Type: ${unit.type}</p>
         </div>
-        <button class="btn" id="owner-unit_${unit.id}">Go To Unit</button>
+        <button id="owner-unit_${unit.id}">Go To Unit</button>
         `;
       })
       .join("");

@@ -4,7 +4,6 @@ const URL = API_URL + "/owner";
 
 import {
   makeOptions,
-  sanitizeStringWithTableRows,
   handleHttpErrors,
   handleFetchError,
   loadingContent,
@@ -15,25 +14,27 @@ export async function initManageOwners() {
   renderOwners();
   document.getElementById("owner-page-content").onclick = ownerDetails;
   window.onclick = closeModal;
+
+  const searchBtn = document.getElementById("search-btn");
+  searchBtn.addEventListener("click", () => {
+    const searchValue = document.getElementById("owner-search").value;
+    renderOwners(0, searchValue);
+  });
 }
 
-async function renderOwners(retryCount = 0) {
+async function renderOwners(retryCount = 0, searchValue = "") {
   const addButton = `<button id="add-owner">Tilføj Ejer</button>`;
+  if (searchValue) {
+    searchValue = "/search/" + searchValue;
+  }
   try {
-    let owners = await fetch(URL, makeOptions("GET", null, true)).then(
-      handleHttpErrors
-    );
-
-    const ownerDivs = owners.content
-      .map((owner) => {
-        return `<div class="owner-box">
-        <p class="owner-name">${owner.firstName} ${owner.lastName}</p>
-        <p class="owner-email">${owner.email}</p>
-        <p class="owner-mobile">${owner.mobile}</p>
-        <button class="btn" id="owner-details_${owner.id}">Details</button>
-      </div>`;
-      })
-      .join("");
+    let owners = await fetch(
+      URL + searchValue,
+      makeOptions("GET", null, true)
+    ).then(handleHttpErrors);
+    const ownerDivs = Array.isArray(owners.content)
+      ? owners.content.map(generateOwnerHTML).join("")
+      : owners.map(generateOwnerHTML).join("");
 
     document.getElementById("owner-page-content").innerHTML =
       addButton + ownerDivs;
@@ -82,7 +83,7 @@ function displayAddOwnerModal() {
     renderOwners();
   });
 }
-//TODO ADD OWNER
+
 async function createOwner() {
   const firstname = document.getElementById("create-owner-firstname").value;
   const lastname = document.getElementById("create-owner-lastname").value;
@@ -111,12 +112,18 @@ async function createOwner() {
     console.error("Could not create new owner: " + err);
   }
 }
-//TODO SEARCH BY NAME
-
-//TODO GET BY MOBILE
 
 function closeModal(evt) {
   if (evt.target == document.getElementById("owner-modal")) {
     document.getElementById("owner-modal").style.display = "none";
   }
 }
+
+const generateOwnerHTML = (owner) => `
+    <div class="owner-box">
+      <p class="owner-name">${owner.firstName} ${owner.lastName}</p>
+      <p class="owner-email">${owner.email}</p>
+      <p class="owner-mobile">${owner.mobile}</p>
+      <button id="owner-details_${owner.id}">Details</button>
+    </div>
+  `;
