@@ -264,7 +264,7 @@ function updatePlanView(){
         cleanPlanBox.innerHTML = cleanPlanData;
         title.innerText = "Rengøringsplaner"
     }
-    
+    setupEventHandlers()
 }
 
 function setupEventHandlers(){
