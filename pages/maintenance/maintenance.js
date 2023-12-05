@@ -2,6 +2,7 @@ import { API_URL } from "../../settings.js";
 
 const MAINTENANCE_URL = API_URL + "/maintenance-task";
 const LOCATION_URL = API_URL + "/location";
+const UNIT_URL = API_URL + "/unit";
 import {
   makeOptions,
   sanitizeStringWithTableRows,
@@ -10,11 +11,16 @@ import {
   handleFetchError,
 } from "../../utils.js";
 
+let clicked;
+let tasks;
+
 export async function initMaintenance() {
   document.getElementById("maintenance-content").innerHTML = loadingContent;
   renderMaintenancePage();
-  /* document.getElementById("maintenance-content").onclick = maintenanceDetails; */
-  window.onclick = closeModal;
+  document.getElementById("maintenance-content").onclick = maintenanceDetails;
+
+  document.getElementById("btn-add-maintenance").onclick = displayAddTaskModal;
+  //window.onclick = closeModal;
 
   //TODO implement search functionality
   /* const searchBtn = document.getElementById("maintenance-search-btn");
@@ -25,13 +31,36 @@ export async function initMaintenance() {
 }
 
 async function renderMaintenancePage(retryCount = 0, searchValue = "") {
-  const locationDropdownElement = `<div id="location-dropdown-container">
-<label for="location-dropdown">Feriested</label>
-<select id="location-dropdown"></select>
+  const pageContent = `
+<div class="input-group" id="location-dropdown-container">
+<div class="input-group-prepend">
+  <label class="input-group-text" for="location-dropdown">Feriested</label>
+</div class="custom-select">
+  <select id="location-dropdown">
+    <option>Intet valgt</option>
+  </select>
+</div>
+
+<div id="maintenance-tasks-container">
+<table class="table">
+<thead>
+  <tr>
+    <th>Hus/Lejlighed</th>
+    <th>Title</th>
+    <th>Beskrivelse</th>
+    <th>Status</th>
+    <th>Prioritet</th>
+    <th>Tildelt</th>
+    <th>Oprettet</th>
+    <th>Info</th>
+  </tr>
+</thead>
+<tbody id="tbl-body-maintenance"></tbody>
+</table>
 </div>`;
 
-  /* const contentDiv = document.getElementById("location-drop-content");
-  contentDiv.innerHTML = locationDropdownElement;
+  const contentDiv = document.getElementById("maintenance-content");
+  contentDiv.innerHTML = pageContent;
 
   try {
     const locations = await fetch(
@@ -45,22 +74,30 @@ async function renderMaintenancePage(retryCount = 0, searchValue = "") {
       const option = document.createElement("option");
       option.value = location.id;
       option.textContent = location.locationName;
+      if (location.id == clicked) {
+        option.selected = true;
+      }
       locationDropdown.appendChild(option);
     });
 
-    locationDropdown.addEventListener("click", () => {
+    if (clicked != null) {
+      displayMaintenanceTasks(tasks);
+    }
+
+    locationDropdown.addEventListener("change", () => {
       const selectLocation = locationDropdown.value;
+      clicked = locationDropdown.value;
       fetchMaintenanceTasks(selectLocation);
     });
   } catch (error) {
     console.error(error);
     handleFetchError(renderMaintenancePage, retryCount, contentDiv);
-  } */
+  }
 }
 
 async function fetchMaintenanceTasks(locationId) {
   try {
-    const tasks = await fetch(
+    tasks = await fetch(
       MAINTENANCE_URL + "/location/" + locationId,
       makeOptions("GET", null, true)
     ).then(handleHttpErrors);
@@ -72,19 +109,176 @@ async function fetchMaintenanceTasks(locationId) {
 }
 
 function displayMaintenanceTasks(tasks) {
-  const maintenanceTasksContainer = document.getElementById(
-    "maintenance-tasks-container"
-  );
+  const taskRows = tasks
+    .map((task) => {
+      return `<tr>
+    <td>${task.unitNumber}</td>
+    <td>${task.title}</td>
+    <td>${task.description}</td>
+    <td>${task.status}</td>
+    <td>${task.priority}</td>
+    <td>${task.accountUsername}</td>
+    <td>${task.created}</td>
+    <td><button id="maintenance-details_${task.id}">Detaljer</button></td>
+  </tr>`;
+    })
+    .join("");
+  // Display tasks in the table
+  document.getElementById("tbl-body-maintenance").innerHTML =
+    sanitizeStringWithTableRows(taskRows);
+}
 
-  // Clear previous tasks
-  maintenanceTasksContainer.innerHTML = "";
+async function maintenanceDetails(evt) {
+  const clicked = evt.target;
+  if (!clicked.id.startsWith("maintenance-details_")) {
+    return;
+  }
 
-  // Display tasks in the container
-  tasks.forEach((task) => {
-    const taskBox = document.createElement("div");
-    taskBox.textContent = `${task.title} - ${task.description}`;
-    maintenanceTasksContainer.appendChild(taskBox);
+  const id = clicked.id.replace("maintenance-details_", "");
+  window.router.navigate("maintenance-details?id=" + id);
+}
+
+async function displayAddTaskModal() {
+  const modal = document.getElementById("maintenance-modal");
+
+  const inputForm = `
+    <span class="close">&times;</span>
+  
+    <label for="task-title">Titel:</label>
+    <input type="text" id="task-title" name="title">
+    <br>
+
+    <label for="task-description">Beskrivelse:</label>
+    <input type="text" id="task-description" name="description">
+    <br>
+
+    <label for="task-status">Status:</label>
+    <select id="task-status" name="status" required>
+        <option value="NOT_STARTED">Not Started</option>
+        <option value="IN_PROGRESS">In Progress</option>
+        <option value="DONE">Done</option>
+    </select>
+    <br>
+
+    <label for="task-priority">Prioritet:</label>
+    <select id="task-priority" name="priority" required>
+        <option value="LOW">Low</option>
+        <option value="MEDIUM">Medium</option>
+        <option value="HIGH">High</option>
+    </select><br>
+
+    <label for="task-image">Billeder:</label>
+    <input type="file" id="task-image" name="image" accept="image/*"><br>
+
+    <label for="task-account">Tildel medarbejder</label>
+    <input type="text" id="task-account" name="account"><br>
+
+    <label for="task-location">Feriested:</label>
+    <select id="task-location" name="location" required>
+    <option>Intet valgt</option>
+    </select><br>
+
+    <label for="task-unit">Hus/Lejlighed:</label>
+    <select id="task-unit" name="unit" required disabled></select><br>
+
+    <button id="create-task-btn">Opret</button>
+  `;
+
+  modal.querySelector(".modal-content").innerHTML = inputForm;
+  modal.style.display = "block";
+
+  const closeBtn = modal.querySelector(".close");
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
   });
+
+  // Fetch locations and populate the location dropdown
+  try {
+    const locations = await fetch(
+      LOCATION_URL,
+      makeOptions("GET", null, true)
+    ).then(handleHttpErrors);
+    const locationDropdown = document.getElementById("task-location");
+
+    locations.content.forEach((location) => {
+      const option = document.createElement("option");
+      option.value = location.id;
+      option.textContent = location.locationName;
+      locationDropdown.appendChild(option);
+    });
+
+    // Add event listener to location dropdown to dynamically populate the unit dropdown based on the selected location
+    locationDropdown.addEventListener("change", async () => {
+      const selectedLocationId = locationDropdown.value;
+      await populateUnitDropdown(selectedLocationId);
+    });
+  } catch (error) {
+    console.error(error);
+    // Handle fetch error if necessary
+  }
+
+  const createBtn = document.getElementById("create-task-btn");
+  createBtn.addEventListener("click", async () => {
+    await createMaintenanceTask();
+    modal.style.display = "none";
+    renderMaintenancePage();
+  });
+}
+
+async function populateUnitDropdown(locationId) {
+  try {
+    const units = await fetch(
+      UNIT_URL + "/" + locationId,
+      makeOptions("GET", null, true)
+    ).then(handleHttpErrors);
+    const unitDropdown = document.getElementById("task-unit");
+
+    // Clear previous options
+    unitDropdown.innerHTML = "";
+
+    units.content.forEach((unit) => {
+      const option = document.createElement("option");
+      option.value = unit.id;
+      option.textContent = unit.unitNumber;
+      unitDropdown.appendChild(option);
+    });
+
+    unitDropdown.disabled = false;
+  } catch (error) {
+    console.error(error);
+    // Handle fetch error if necessary
+  }
+}
+
+async function createMaintenanceTask() {
+  const taskTitleInput = document.getElementById("task-title").value;
+  const taskDescriptionInput =
+    document.getElementById("task-description").value;
+  const taskStatusSelect = document.getElementById("task-status").value;
+  const taskPrioritySelect = document.getElementById("task-priority").value;
+  const taskImageInput = document.getElementById("task-image").files[0];
+  const taskAccountInput = document.getElementById("task-account").value;
+  const taskUnitInput = document.getElementById("task-unit").value;
+
+  const formData = new FormData();
+  formData.append("title", taskTitleInput);
+  formData.append("description", taskDescriptionInput);
+  formData.append("status", taskStatusSelect);
+  formData.append("priority", taskPrioritySelect);
+  if (taskImageInput) {
+    // Check if a file is selected
+    formData.append("image", taskImageInput);
+  }
+  formData.append("accountUsername", taskAccountInput);
+  formData.append("unitId", taskUnitInput);
+
+  try {
+    await fetch(MAINTENANCE_URL, makeOptions("POST", formData, true)).then(
+      handleHttpErrors
+    );
+  } catch (error) {
+    console.error("Could not create new task: " + error);
+  }
 }
 
 /* async function renderMaintenance(retryCount = 0, searchValue = "") {
