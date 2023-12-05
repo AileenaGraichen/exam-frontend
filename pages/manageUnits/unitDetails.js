@@ -27,7 +27,12 @@ async function fetchAndRenderUnitDetails(unitId) {
       unit = await fetch(`${URL}/oneunit/${unitId}`, makeOptions("GET", null, true)).then(handleHttpErrors);
       console.log('Unit details:', unit); // Log the fetched unit data
 
-      const unitDetailsHTML = generateUnitDetailsHTML(unit);
+      // maybe fuck up
+      const owner = await fetchOwnerDetails(unit.ownerId);
+      console.log('Owner details:', owner);
+      const ownerFullName = `${owner.firstName} ${owner.lastName}`;
+      //maybe fuckup end
+      const unitDetailsHTML = generateUnitDetailsHTML(unit, ownerFullName);
       document.getElementById("unit-details-content").innerHTML = unitDetailsHTML;
 
   } catch (err) {
@@ -36,19 +41,36 @@ async function fetchAndRenderUnitDetails(unitId) {
   }
 }
 
-    function generateUnitDetailsHTML(unit) {
+async function fetchOwnerDetails(ownerId) {
+  try {
+    const owner = await fetch(`${API_URL}/owner/${ownerId}`, makeOptions("GET", null, true)).then(handleHttpErrors);
+    return owner;
+  } catch (error) {
+    console.error('Error fetching owner details:', error);
+    throw new Error('Error fetching owner details');
+  }
+}
+
+    function generateUnitDetailsHTML(unit, ownerFullName) {
       const unitDetailsBox1 = document.getElementById("unit-details-box-1")
       const unitDetailsBox2 = document.getElementById("unit-details-box-2")
       const unitDetailsBox3 = document.getElementById("unit-details-box-3")
       const unitDetailsBox4 = document.getElementById("unit-details-box-4")
       const unitDetailsBox5 = document.getElementById("unit-details-box-5")
       const unitDetailsBox6 = document.getElementById("unit-details-box-6")
+//keycode
+      unitDetailsBox1.innerHTML = `<h3 class="unit-location">${unit.location.locationName} ${unit.unitNumber}</h3>`
 
-      unitDetailsBox1.innerHTML = `<p class="unit-location">Location: ${unit.location.locationName}</p>
-      <p class="unit-number">Unit Number: ${unit.unitNumber}</p>`
+      unitDetailsBox2.innerHTML = `<img src="data:${unit.mimetype};base64,${unit.image}" alt="unit image">`;
+
+      unitDetailsBox3.innerHTML = `<h3>Addresse</h3><p class="unit-address"> ${unit.location.address} ${unit.unitNumber}</p>`
+
+      unitDetailsBox4.innerHTML = `<h3>Info</h3><p class="unit-owner">Ejer: ${ownerFullName}</p>
+      <p class="unit-keyCode">Nøglekode: ${unit.keyCode}</p>`
+
       unitDetailsBox5.innerHTML = unit.cleaningPlans.map((plan) => `
-      <p class="unit-cleaning-plan-name">Cleaner: ${plan.userName}</p>
-      <p class="unit-cleaning-plan-date">Date: ${plan.date}</p>`)
+      <h3>Rengøringsplan</h3>
+      <p class="unit-cleaning-plan">${plan.date} ${plan.userName}</p>`)
       .join("");
 
       unitDetailsBox6.innerHTML = unit.maintenanceTasks.map((task) => `
