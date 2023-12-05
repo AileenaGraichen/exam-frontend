@@ -1,9 +1,11 @@
 import { API_URL } from '../../settings.js'
 import { handleHttpErrors } from '../../utils.js'
-
+import { addClickableWithEnter } from '../../utils.js'
 
 export function initLogin() {
   document.getElementById("login-btn").addEventListener("click", login)
+  addClickableWithEnter("username", "login-btn")
+  addClickableWithEnter("password", "login-btn")
 }
 
 async function login() {

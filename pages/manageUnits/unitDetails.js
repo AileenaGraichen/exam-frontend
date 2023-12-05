@@ -49,7 +49,7 @@ async function fetchAndRenderUnitDetails(unitId) {
       unitDetailsBox4.innerHTML = `<p class="unit-address">Info: ${unit.location.address}</p>
       <p class="unit-number">Unit Number: ${unit.unitNumber}</p>`
       unitDetailsBox5.innerHTML = unit.cleaningPlans.map((plan) => `
-      <p class="unit-cleaning-plan-name">Cleaner: ${plan.userName}</p>
+      <p class="unit-cleaning-plan-name">Cleanero: ${plan.userName}</p>
       <p class="unit-cleaning-plan-date">Date: ${plan.date}</p>`)
       .join("");
 

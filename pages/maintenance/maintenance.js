@@ -1,6 +1,7 @@
 import { API_URL } from "../../settings.js";
 
-const URL = API_URL + "/maintenance-task";
+const MAINTENANCE_URL = API_URL + "/maintenance-task";
+const LOCATION_URL = API_URL + "/location";
 import {
   makeOptions,
   sanitizeStringWithTableRows,
@@ -11,8 +12,8 @@ import {
 
 export async function initMaintenance() {
   document.getElementById("maintenance-content").innerHTML = loadingContent;
-  renderMaintenance();
-  document.getElementById("maintenance-content").onclick = maintenanceDetails;
+  renderMaintenancePage();
+  /* document.getElementById("maintenance-content").onclick = maintenanceDetails; */
   window.onclick = closeModal;
 
   //TODO implement search functionality
@@ -23,7 +24,70 @@ export async function initMaintenance() {
   }); */
 }
 
-async function renderMaintenance(retryCount = 0, searchValue = "") {
+async function renderMaintenancePage(retryCount = 0, searchValue = "") {
+  const locationDropdownElement = `<div id="location-dropdown-container">
+<label for="location-dropdown">Feriested</label>
+<select id="location-dropdown"></select>
+</div>`;
+
+  /* const contentDiv = document.getElementById("location-drop-content");
+  contentDiv.innerHTML = locationDropdownElement;
+
+  try {
+    const locations = await fetch(
+      LOCATION_URL,
+      makeOptions("GET", null, true)
+    ).then(handleHttpErrors);
+
+    const locationDropdown = document.getElementById("location-dropdown");
+
+    locations.content.map((location) => {
+      const option = document.createElement("option");
+      option.value = location.id;
+      option.textContent = location.locationName;
+      locationDropdown.appendChild(option);
+    });
+
+    locationDropdown.addEventListener("click", () => {
+      const selectLocation = locationDropdown.value;
+      fetchMaintenanceTasks(selectLocation);
+    });
+  } catch (error) {
+    console.error(error);
+    handleFetchError(renderMaintenancePage, retryCount, contentDiv);
+  } */
+}
+
+async function fetchMaintenanceTasks(locationId) {
+  try {
+    const tasks = await fetch(
+      MAINTENANCE_URL + "/location/" + locationId,
+      makeOptions("GET", null, true)
+    ).then(handleHttpErrors);
+
+    displayMaintenanceTasks(tasks);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function displayMaintenanceTasks(tasks) {
+  const maintenanceTasksContainer = document.getElementById(
+    "maintenance-tasks-container"
+  );
+
+  // Clear previous tasks
+  maintenanceTasksContainer.innerHTML = "";
+
+  // Display tasks in the container
+  tasks.forEach((task) => {
+    const taskBox = document.createElement("div");
+    taskBox.textContent = `${task.title} - ${task.description}`;
+    maintenanceTasksContainer.appendChild(taskBox);
+  });
+}
+
+/* async function renderMaintenance(retryCount = 0, searchValue = "") {
   searchValue = searchValue ? "/search/" + searchValue : "";
   document.getElementById("maintenance-content").innerHTML =
     sanitizeStringWithTableRows(table);
@@ -187,3 +251,4 @@ const table = `<table class="table">
 </thead>
 <tbody id="tbody-maintenance"></tbody>
 </table>`;
+ */
