@@ -51,8 +51,6 @@ async function fetchOwnerDetails(ownerId) {
   }
 }
 
-
-
     function generateUnitDetailsHTML(unit, ownerFullName) {
       const unitDetailsBox1 = document.getElementById("unit-details-box-1")
       const unitDetailsBox2 = document.getElementById("unit-details-box-2")
@@ -61,17 +59,18 @@ async function fetchOwnerDetails(ownerId) {
       const unitDetailsBox5 = document.getElementById("unit-details-box-5")
       const unitDetailsBox6 = document.getElementById("unit-details-box-6")
 //keycode
-      unitDetailsBox1.innerHTML = `<p class="unit-location">Location: ${unit.location.locationName}</p>
-      <p class="unit-number">Unit Number: ${unit.unitNumber}</p>`
+      unitDetailsBox1.innerHTML = `<h3 class="unit-location">${unit.location.locationName} ${unit.unitNumber}</h3>`
+
       unitDetailsBox2.innerHTML = `<img src="data:${unit.mimetype};base64,${unit.image}" alt="unit image">`;
 
-      unitDetailsBox4.innerHTML = `<p class="unit-address">Info: ${unit.location.address}</p>
-      <p class="unit-number">Unit Number: ${unit.unitNumber}</p>
-      <p class="unit-keyCode">keyCode: ${unit.keyCode}</p>
-      <p class="unit-owner">Owner: ${ownerFullName}</p>`
+      unitDetailsBox3.innerHTML = `<h3>Addresse</h3><p class="unit-address"> ${unit.location.address} ${unit.unitNumber}</p>`
+
+      unitDetailsBox4.innerHTML = `<h3>Info</h3><p class="unit-owner">Ejer: ${ownerFullName}</p>
+      <p class="unit-keyCode">Nøglekode: ${unit.keyCode}</p>`
+
       unitDetailsBox5.innerHTML = unit.cleaningPlans.map((plan) => `
-      <p class="unit-cleaning-plan-name">Cleaner: ${plan.userName}</p>
-      <p class="unit-cleaning-plan-date">Date: ${plan.date}</p>`)
+      <h3>Rengøringsplan</h3>
+      <p class="unit-cleaning-plan">${plan.date} ${plan.userName}</p>`)
       .join("");
 
       unitDetailsBox6.innerHTML = unit.maintenanceTasks.map((task) => `
