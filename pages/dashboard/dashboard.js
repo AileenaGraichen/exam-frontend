@@ -32,7 +32,7 @@ async function setupData(userRoles){
     try {
         fetchTasks()
         fetchLocations()
-        //fetchCleanPlan()
+        fetchCleanPlan()
         //fetchPersonel()
     } catch (error) {
         console.error(error);
@@ -40,13 +40,27 @@ async function setupData(userRoles){
 }
 
 
-function fetchTasks(){
-    // const activeChart = Chart.getChart("myChart")
-    // if(activeChart){
-    //     activeChart.destroy();
-    // }
+async function fetchTasks(){
+    let doneCounter = 0
+    let inProgressCounter = 0
+    let noStartCounter = 0
     
-    let yValues = [60, 12, 20]
+    try {
+        const data = await fetch(`${API_URL}/maintenance-task?size=1000`, makeOptions("GET", null, true)).then(handleHttpErrors)
+        data.content.map(task => {
+            if(task.status == "DONE"){
+                doneCounter++
+            } else if(task.status == "IN_PROGRESS"){
+                inProgressCounter++
+            }else if(task.status == "NOT_STARTED"){
+                noStartCounter++
+            }
+        })
+    } catch (error) {
+        
+    }
+
+    let yValues = [doneCounter, inProgressCounter, noStartCounter]
     let xValues = ["Færdige", "I gang", "Ikke startet"]
     const barColors = ["green","blue", "red"];
     //fetch task data and put into "yValues" array before creating chart. Above is just temp data.
@@ -73,8 +87,13 @@ function displayData(locations){
 
 async function fetchCleanPlan(){
     //fetch call
+    //Change to pageable object for faster page load. Use ?size=5 maybe
+    const data = await fetch(`${API_URL}/cleaning`, makeOptions("GET", null, true)).then(handleHttpErrors)
     //setupData and put into div
-    //document.getElementById("cleaning-data-box").innerHTML = cleanObjects;
+    const cleanObjects = data.map(plan => `
+    <div class="dashboard-data-list">${plan.date} - ${plan.userName}</div>
+    `).join('')
+    document.getElementById("cleaning-data-box").innerHTML = cleanObjects;
 
 }
 async function fetchPersonel(){
