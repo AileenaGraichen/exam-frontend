@@ -217,15 +217,22 @@ label {
   display:grid;
   grid-column-gap:40px;
   grid-row-gap:20px;
-  width:1500px;
-  height:1000px;
-  border: 1px solid green;
+  width:90vw;
+  height:90vh;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   grid-template-areas:
   "one two three"
-  "four four three"
-  "five five five"
+  "four five three"
+}
+
+.dashboard-item{
+  border-radius: var(--border-radius);
+  padding: 5px 0 0 15px;
+  cursor:pointer;
+  border: 1px solid green;
+  min-height: 300px;
+  overflow:hidden;
 }
 
 @media(max-width:1500px){
@@ -255,19 +262,11 @@ label {
     "five"
   }
 }
-.dashboard-item{
-  border-radius: var(--border-radius);
-  padding: 5px 0 0 15px;
-  cursor:pointer;
-  border: 1px solid green;
+
+#myChart{
+  width: 100%;
+  max-width:650px;
 }
-
-
-#task-box{
-  grid-area:one;
-  position: relative;
-}
-
 #donut-inner-text{
   font-size:50px;
   width:auto;
@@ -275,6 +274,10 @@ label {
   position: absolute;
   z-index:5000;
   margin: -55% 0 0 35%;
+}
+#task-box{
+  grid-area:one;
+  position: relative;
 }
 
 #cleaning-box{
@@ -287,6 +290,9 @@ label {
 #personel-box{
   
   grid-area:four;
+}
+#owner-box{
+  grid-area:five;
 }
 
 .dashboard-data-list{
