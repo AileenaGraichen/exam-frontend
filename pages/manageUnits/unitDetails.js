@@ -54,6 +54,7 @@ async function fetchOwnerDetails(ownerId) {
     function generateUnitDetailsHTML(unit, ownerFullName) {
       const unitDetailsBox1 = document.getElementById("unit-details-box-1")
       const unitDetailsBox2 = document.getElementById("unit-details-box-2")
+      setBorderColor(unitDetailsBox2, unit.status);
       const unitDetailsBox3 = document.getElementById("unit-details-box-3")
       const unitDetailsBox4 = document.getElementById("unit-details-box-4")
       const unitDetailsBox5 = document.getElementById("unit-details-box-5")
@@ -98,6 +99,25 @@ async function fetchOwnerDetails(ownerId) {
           <!-- Add other unit details as needed -->
         </div>`;
     }
+
+    
+    function setBorderColor(element, status) {
+      console.log(status);
+      switch (status) {
+        case "AVAILABLE":
+          element.style.border = "5px solid green";
+          break;
+        case "IN_PROGRESS":
+          element.style.border = "5px solid yellow"; // Corrected line
+          break;
+        case "UNAVAILABLE":
+          element.style.border = "5px solid red";
+          break;
+        default:
+          element.style.border = "5px solid black"; // Default color if status is not recognized
+      }
+    }
+
 
 async function manageUnit(evt) {
     const clicked = evt.target;
