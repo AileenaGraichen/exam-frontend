@@ -11,7 +11,7 @@ import {
   handleFetchError,
 } from "../../utils.js";
 
-let clicked;
+let clickedLocation;
 let tasks;
 
 export async function initMaintenance() {
@@ -20,7 +20,7 @@ export async function initMaintenance() {
   document.getElementById("maintenance-content").onclick = maintenanceDetails;
 
   document.getElementById("btn-add-maintenance").onclick = displayAddTaskModal;
-  //window.onclick = closeModal;
+  window.onclick = closeModal;
 
   //TODO implement search functionality
   /* const searchBtn = document.getElementById("maintenance-search-btn");
@@ -74,19 +74,19 @@ async function renderMaintenancePage(retryCount = 0, searchValue = "") {
       const option = document.createElement("option");
       option.value = location.id;
       option.textContent = location.locationName;
-      if (location.id == clicked) {
+      if (location.id == clickedLocation) {
         option.selected = true;
       }
       locationDropdown.appendChild(option);
     });
 
-    if (clicked != null) {
+    if (clickedLocation != null) {
       displayMaintenanceTasks(tasks);
     }
 
     locationDropdown.addEventListener("change", () => {
       const selectLocation = locationDropdown.value;
-      clicked = locationDropdown.value;
+      clickedLocation = locationDropdown.value;
       fetchMaintenanceTasks(selectLocation);
     });
   } catch (error) {
@@ -117,7 +117,9 @@ function displayMaintenanceTasks(tasks) {
     <td>${task.description}</td>
     <td>${task.status}</td>
     <td>${task.priority}</td>
-    <td>${task.accountUsername}</td>
+    <td>${
+      task.accountUsername != null ? task.accountUsername : "Ikke Tildelt"
+    }</td>
     <td>${task.created}</td>
     <td><button id="maintenance-details_${task.id}">Detaljer</button></td>
   </tr>`;
@@ -135,7 +137,9 @@ async function maintenanceDetails(evt) {
   }
 
   const id = clicked.id.replace("maintenance-details_", "");
-  window.router.navigate("maintenance-details?id=" + id);
+  window.router.navigate(
+    "maintenance-details?task=" + id + "&location=" + clickedLocation
+  );
 }
 
 async function displayAddTaskModal() {
@@ -273,11 +277,23 @@ async function createMaintenanceTask() {
   formData.append("unitId", taskUnitInput);
 
   try {
-    await fetch(MAINTENANCE_URL, makeOptions("POST", formData, true)).then(
-      handleHttpErrors
-    );
+    const newTask = await fetch(
+      MAINTENANCE_URL,
+      makeOptions("POST", formData, true)
+    ).then(handleHttpErrors);
+
+    if (clickedLocation != null) {
+      tasks.push(newTask);
+      displayMaintenanceTasks(tasks);
+    }
   } catch (error) {
     console.error("Could not create new task: " + error);
+  }
+}
+
+function closeModal(evt) {
+  if (evt.target == document.getElementById("maintenance-modal")) {
+    document.getElementById("maintenance-modal").style.display = "none";
   }
 }
 
