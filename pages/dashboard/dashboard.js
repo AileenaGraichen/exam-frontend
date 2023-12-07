@@ -24,7 +24,10 @@ function setupLinks(){
         window.router.navigate("/location")
     })
     document.getElementById("personel-box").addEventListener("click", () => {
-        window.router.navigate("/personel")
+        window.router.navigate("/accounts")
+    })
+    document.getElementById("owner-box").addEventListener("click", () => {
+        window.router.navigate("/owners")
     })
     
 }
