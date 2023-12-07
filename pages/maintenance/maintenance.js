@@ -42,21 +42,6 @@ async function renderMaintenancePage(retryCount = 0, searchValue = "") {
 </div>
 
 <div id="maintenance-tasks-container">
-<table class="table">
-<thead>
-  <tr>
-    <th>Hus/Lejlighed</th>
-    <th>Title</th>
-    <th>Beskrivelse</th>
-    <th>Status</th>
-    <th>Prioritet</th>
-    <th>Tildelt</th>
-    <th>Oprettet</th>
-    <th>Info</th>
-  </tr>
-</thead>
-<tbody id="tbl-body-maintenance"></tbody>
-</table>
 </div>`;
 
   const contentDiv = document.getElementById("maintenance-content");
@@ -109,25 +94,44 @@ async function fetchMaintenanceTasks(locationId) {
 }
 
 function displayMaintenanceTasks(tasks) {
-  const taskRows = tasks
+  const taskCards = tasks
     .map((task) => {
-      return `<tr>
-    <td>${task.unitNumber}</td>
-    <td>${task.title}</td>
-    <td>${task.description}</td>
-    <td>${task.status}</td>
-    <td>${task.priority}</td>
-    <td>${
-      task.accountUsername != null ? task.accountUsername : "Ikke Tildelt"
-    }</td>
-    <td>${task.created}</td>
-    <td><button id="maintenance-details_${task.id}">Detaljer</button></td>
-  </tr>`;
+      let imageElement = task.image
+        ? `<img class="card-img-top img-fluid" src="data:${task.mimetype};base64,${task.image}" alt="">`
+        : `<img class="card-img-top img-fluid" src="static/images/house.png" alt="">`;
+      return `
+      <div class="card box">
+        ${imageElement}
+        <div class="card-body">
+          <h5 class="card-title">${task.unitNumber}</h5>
+          <h6 class="card-subtitle">${task.title}</h6>
+        </div>
+        <ul id="task-${task.id}" class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Status:</strong> ${
+            task.status
+          }</li>
+          <li class="list-group-item"><strong>Prioritet:</strong> ${
+            task.priority
+          }</li>
+          <li class="list-group-item"><strong>Tildelt:</strong> ${
+            task.accountUsername != null ? task.accountUsername : "Ikke Tildelt"
+          }</li>
+        </ul>
+        <div class="card-body">  
+          <a href="#" class="btn btn-primary" id="maintenance-details_${
+            task.id
+          }">Detaljer</a>
+        </div>
+      </div>`;
     })
     .join("");
-  // Display tasks in the table
-  document.getElementById("tbl-body-maintenance").innerHTML =
-    sanitizeStringWithTableRows(taskRows);
+  // Display tasks
+  document.getElementById("maintenance-tasks-container").innerHTML = taskCards;
+
+  tasks.forEach((task) => {
+    const element = document.getElementById(`task-${task.id}`);
+    setBorderColor(element, task.priority);
+  });
 }
 
 async function maintenanceDetails(evt) {
@@ -295,6 +299,28 @@ function closeModal(evt) {
   if (evt.target == document.getElementById("maintenance-modal")) {
     document.getElementById("maintenance-modal").style.display = "none";
   }
+}
+
+function setBorderColor(element, priority) {
+  switch (priority) {
+    case "LOW":
+      element.style.border = "5px solid green";
+      break;
+    case "MEDIUM":
+      element.style.border = "5px solid yellow";
+      break;
+    case "HIGH":
+      element.style.border = "5px solid red";
+      break;
+    default:
+      element.style.border = "5px solid black"; // Default color if status is not recognized
+  }
+}
+
+function isMobile() {
+  const regex =
+    /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+  return regex.test(navigator.userAgent);
 }
 
 /* async function renderMaintenance(retryCount = 0, searchValue = "") {

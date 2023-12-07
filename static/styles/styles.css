@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
 
 :root {
-  --font-family: 'Noto Sans', sans-serif;
+  --font-family: "Noto Sans", sans-serif;
   --background-color: rgb(245, 199, 167);
   --complementary-color: rgb(251, 225, 201); /*boxes/elements*/
   --primary-color: rgb(34, 26, 14); /*text*/
@@ -30,18 +30,18 @@ h1 {
   color: var(--primary-color);
 }
 
-h3{
+h3 {
   color: var(--primary-color);
   font-family: var(--font-family);
   font-weight: bold;
 }
 
-p{
+p {
   color: var(--primary-color);
   font-family: var(--font-family);
 }
 
-.box{
+.box {
   background-color: var(--complementary-color);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
@@ -50,7 +50,7 @@ p{
 
 /* TODO Find a better solution for margin -10*/
 
-#hero{
+#hero {
   margin: -8rem;
 }
 
@@ -208,108 +208,105 @@ label {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50)
+  transform: translate(-50%, -50);
 }
 
-
 /*---------DASHBOARD--------*/
-#dashboard-grid{
-  display:grid;
-  grid-column-gap:40px;
-  grid-row-gap:20px;
-  width:90vw;
-  height:90vh;
+#dashboard-grid {
+  display: grid;
+  grid-column-gap: 40px;
+  grid-row-gap: 20px;
+  width: 90vw;
+  height: 90vh;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
   grid-template-areas:
-  "one two three"
-  "four five three"
+    "one two three"
+    "four five three";
 }
 
-.dashboard-item{
+.dashboard-item {
   border-radius: var(--border-radius);
   padding: 5px 0 0 15px;
-  cursor:pointer;
+  cursor: pointer;
   border: 1px solid green;
   min-height: 300px;
-  overflow:hidden;
+  overflow: hidden;
 }
 
-@media(max-width:1500px){
-  #dashboard-grid{
-    width:1200px;
+@media (max-width: 1500px) {
+  #dashboard-grid {
+    width: 1200px;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(4, 1fr);
     grid-template-areas:
-    "one two"
-    "four three"
-    "four three"
-    "five five"
+      "one two"
+      "four three"
+      "four three"
+      "five five";
   }
 }
-@media(max-width:1200px){
-  #dashboard-grid{
-    max-width:900px;
-    width:auto;
+@media (max-width: 1200px) {
+  #dashboard-grid {
+    max-width: 900px;
+    width: auto;
     grid-template-columns: auto;
     grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 0;
     grid-template-areas:
-    "one"
-    "two"
-    "three"
-    "four"
-    "five"
+      "one"
+      "two"
+      "three"
+      "four"
+      "five";
   }
 }
 
-#myChart{
+#myChart {
   width: 100%;
-  max-width:650px;
+  max-width: 650px;
 }
-#donut-inner-text{
-  font-size:50px;
-  width:auto;
-  height:auto;
+#donut-inner-text {
+  font-size: 50px;
+  width: auto;
+  height: auto;
   position: absolute;
-  z-index:5000;
+  z-index: 5000;
   margin: -55% 0 0 35%;
 }
-#task-box{
-  grid-area:one;
+#task-box {
+  grid-area: one;
   position: relative;
 }
 
-#cleaning-box{
-  grid-area:two;
+#cleaning-box {
+  grid-area: two;
 }
-#overview-box{
- 
-  grid-area:three;
+#overview-box {
+  grid-area: three;
 }
-#personel-box{
-  
-  grid-area:four;
+#personel-box {
+  grid-area: four;
 }
-#owner-box{
-  grid-area:five;
+#owner-box {
+  grid-area: five;
 }
 
-.dashboard-data-list{
-  width:90%;
+.dashboard-data-list {
+  width: 90%;
   border: var(--border);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   background-color: var(--complementary-color);
-  margin-bottom: 15px;  
+  margin-bottom: 15px;
 }
 
-.dashboard-data-list:first-child{
-  margin-top:30px;
+.dashboard-data-list:first-child {
+  margin-top: 30px;
 }
-.dashboard-data-list h4{
+.dashboard-data-list h4 {
   text-overflow: ellipsis;
-  overflow: hidden; 
+  overflow: hidden;
   white-space: nowrap;
 }
 
@@ -337,7 +334,7 @@ label {
   .grid-container {
     grid-template-columns: 1fr; /* Single column on smaller screens */
   }
-  
+
   .box:nth-child(1),
   .box:nth-child(5),
   .box:nth-child(6) {
@@ -352,7 +349,7 @@ label {
   height: 34px;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -365,9 +362,9 @@ label {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #2196F3;
-  -webkit-transition: .4s;
-  transition: .4s;
+  background-color: #2196f3;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -378,16 +375,16 @@ label {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider:before {
@@ -405,36 +402,34 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-.cleanplan-box{
-  float:left;
-  height:200px;
-  width:200px;
-  border:1px solid black;
+.cleanplan-box {
+  float: left;
+  height: 200px;
+  width: 200px;
+  border: 1px solid black;
   border-radius: var(--border-radius);
   margin: 0 20px 20px 0px;
   overflow-wrap: break-word;
 }
-#switch-button-text{
-  font-weight:700;
+#switch-button-text {
+  font-weight: 700;
 }
-#cleanplan-modal-flexbox{
-  display:flex;
+#cleanplan-modal-flexbox {
+  display: flex;
 }
-#cleanplan-modal-flexbox select{
+#cleanplan-modal-flexbox select {
   overflow-y: auto;
-  width:100%;
+  width: 100%;
 }
-#cleanplan-modal-flexbox button{
-  display:block;
+#cleanplan-modal-flexbox button {
+  display: block;
 }
 
-.cleanplan-column{
+.cleanplan-column {
   width: 300px;
-  height:500px;
+  height: 500px;
   border: 1px solid black;
 }
-
-
 
 /* CSS */
 .button {
@@ -446,7 +441,11 @@ input:checked + .slider:before {
   border-radius: 12px;
   box-shadow: rgba(255, 255, 255, 0.2) 0 1px 0 0 inset;
   background-color: var(--primary-color);
-  background-image: linear-gradient(180deg, rgba(206, 211, 234, 0.07) 0%, transparent 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(206, 211, 234, 0.07) 0%,
+    transparent 100%
+  );
 }
 
 .button:hover {
@@ -454,5 +453,23 @@ input:checked + .slider:before {
 }
 
 .button:active {
-  transform: scale(.95);
+  transform: scale(0.95);
+}
+
+/* MAINTENANCE */
+.card img {
+  object-fit: cover;
+  height: 200px;
+}
+
+.card {
+  margin: 2rem;
+  max-width: 15rem;
+  min-width: 15rem;
+}
+
+#maintenance-tasks-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
