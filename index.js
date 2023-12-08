@@ -12,6 +12,7 @@ import { initOwnerDetails } from "./pages/manageOwners/ownerDetails.js";
 import { initUnits } from "./pages/manageUnits/units.js";
 import { initDashboard } from "./pages/dashboard/dashboard.js";
 import { initMaintenance } from "./pages/maintenance/maintenance.js";
+import { initMaintenanceDetails } from "./pages/maintenance/maintenanceDetails.js";
 import { initUnitDetails } from "./pages/manageUnits/unitDetails.js";
 import { initCleanplan } from "./pages/cleanplan/cleanplan.js";
 
@@ -33,6 +34,9 @@ window.addEventListener("load", async () => {
   const templateDashboard = await loadHtml("./pages/dashboard/dashboard.html");
   const templateMaintenance = await loadHtml(
     "./pages/maintenance/maintenance.html"
+  );
+  const templateMaintenanceDetails = await loadHtml(
+    "./pages/maintenance/maintenanceDetails.html"
   );
   const templateUnitDetails = await loadHtml(
     "./pages/manageUnits/unitDetails.html"
@@ -93,6 +97,10 @@ window.addEventListener("load", async () => {
       "/maintenance": () => {
         renderHtml(templateMaintenance, "content");
         initMaintenance();
+      },
+      "/maintenance-details": (match) => {
+        renderHtml(templateMaintenanceDetails, "content");
+        initMaintenanceDetails(match);
       },
       "/cleanplan": () => {
         renderHtml(templateCleaningPlan, "content");

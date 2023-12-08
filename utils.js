@@ -158,14 +158,12 @@ export const loadingContent = `<div id="loading-spinner" class="spinner-border t
 <span class="sr-only"></span>
 </div>`;
 
-
-export function addClickableWithEnter(inputBoxId, buttonId){
-    const inputField = document.getElementById(inputBoxId);
-    const button = document.getElementById(buttonId);
-    inputField.addEventListener("keydown", (evt) => {
-      if(evt.key === 'Enter'){
-        button.click();
-      }
-    })
-
+export function addClickableWithEnter(inputBoxId, buttonId) {
+  const inputField = document.getElementById(inputBoxId);
+  const button = document.getElementById(buttonId);
+  inputField.addEventListener("keydown", (evt) => {
+    if (evt.key === "Enter") {
+      button.click();
+    }
+  });
 }
