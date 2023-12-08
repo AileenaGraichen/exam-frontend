@@ -18,7 +18,12 @@ export function initUnits() {
             paginationElement.addEventListener("click", handlePaginationClick);
         }
     }
-
+    const addUnitButton = document.getElementById("add-unit-button");
+    
+      addUnitButton.addEventListener("click", () => {
+        displayAddUnitModal();
+      });
+    
     if (locationId) {
         fetchUnitsByLocationId(Number(page), locationId);
     } else {
@@ -231,19 +236,7 @@ async function addUnit() {
   }
 }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM Loaded!");
-    const addUnitButton = document.getElementById("add-unit-button");
-    if (addUnitButton) {
-      addUnitButton.addEventListener("click", () => {
-        displayAddUnitModal();
-      });
-    }
-  });
-
-  //maybe fuck up over
-
-function isMobile() {
+  function isMobile() {
     const regex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
     return regex.test(navigator.userAgent);
 }
