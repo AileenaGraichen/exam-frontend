@@ -3,7 +3,7 @@ import "https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js";
 import "./navigo_EditedByLars.js";
 
 import { setActiveLink, renderHtml, loadHtml } from "./utils.js";
-import { initLogin } from "./pages/login/login.js";
+import { initLogin, toggleLoginStatus } from "./pages/login/login.js";
 import { initLocations } from "./pages/location/location.js";
 import { initManageAccounts } from "./pages/manageAccounts/accounts.js";
 import { initAccountDetails } from "./pages/manageAccounts/accountDetails.js";
@@ -44,7 +44,8 @@ window.addEventListener("load", async () => {
   const templateCleaningPlan = await loadHtml(
     "./pages/cleanplan/cleanplan.html"
   );
-
+  const token = localStorage.getItem("token")
+  toggleLoginStatus(token)
   const router = new Navigo("/", { hash: true });
   window.router = router;
   router

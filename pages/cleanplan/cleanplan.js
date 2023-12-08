@@ -111,7 +111,7 @@ function addCleanplanModal(){
     document.getElementById("cleanplan-add-date-selector").addEventListener("change", addUsersToDropdown)
     const closeBtn = modal.querySelector(".close");
     closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
+        modal.style.display = "none";
     })
     document.getElementById("continue-add-button").addEventListener("click", editCleanPlan)
     modal.style.display = "block";

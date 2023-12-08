@@ -70,10 +70,6 @@ async function login() {
        isTech = localStorage.getItem('roles').includes('TECH');
     }
     
-    for (let i = 0; i < adminListItems.length; i++) {
-        adminListItems[i].style.display = isAdmin ? "block" : "none";
-    }
-    
     for (let i = 0; i < cleanRoutes.length; i++) {
         cleanRoutes[i].style.display = isClean ? "block" : "none";
     }
@@ -81,4 +77,7 @@ async function login() {
     for (let i = 0; i < techRoutes.length; i++) {
         techRoutes[i].style.display = isTech ? "block" : "none";
     }
+    for (let i = 0; i < adminListItems.length; i++) {
+      adminListItems[i].style.display = isAdmin ? "block" : "none";
+  }
 }
