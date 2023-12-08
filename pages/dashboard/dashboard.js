@@ -74,7 +74,7 @@ async function fetchTasks(){
     
 }
 async function fetchLocations(){
-    let data = await fetch(`${API_URL}/location?size=10`, makeOptions("GET", null, false)).then(handleHttpErrors);
+    let data = await fetch(`${API_URL}/location?size=10`, makeOptions("GET", null, true)).then(handleHttpErrors);
     displayData(data.content);
 }
 function displayData(locations){

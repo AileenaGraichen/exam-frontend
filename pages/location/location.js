@@ -154,7 +154,7 @@ async function fetchLocations(page = 0) {
 
       data = await fetch(
         `${URL}?size=100`,
-        makeOptions("GET", null, false)
+        makeOptions("GET", null, true)
       ).then(handleHttpErrors);
       displayData(data.content);
       document.getElementById("pagination").style.display = "none";
@@ -163,11 +163,11 @@ async function fetchLocations(page = 0) {
       console.log("Desktop device detected");
 
       queryString = `?page=${page}&size=${size}&sort=${sortColumn},${sortDirection}`;
-      data = await fetch(`${URL}${queryString}`).then(handleHttpErrors);
+      data = await fetch(`${URL}${queryString}`, makeOptions("GET", null, true)).then(handleHttpErrors);
       displayData(data.content);
       displayPagination(data.totalPages, page);
       document.getElementById("pagination").style.display = "flex";
-      const allData = await fetch(`${URL}?size=100`, makeOptions("GET", null, false)).then(handleHttpErrors)
+      const allData = await fetch(`${URL}?size=100`, makeOptions("GET", null, true)).then(handleHttpErrors)
       locationRawData = allData.content;
     }
     
