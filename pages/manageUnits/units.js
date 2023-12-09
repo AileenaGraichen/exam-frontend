@@ -12,13 +12,18 @@ export function initUnits() {
 
     if (!isInitialized) {
         isInitialized = true;
-        // Ensure the element exists before adding the event listener
+      
         const paginationElement = document.querySelector(".pagination");
         if (paginationElement) {
             paginationElement.addEventListener("click", handlePaginationClick);
         }
     }
-
+    const addUnitButton = document.getElementById("add-unit-button");
+    
+      addUnitButton.addEventListener("click", () => {
+        displayAddUnitModal();
+      });
+    
     if (locationId) {
         fetchUnitsByLocationId(Number(page), locationId);
     } else {
@@ -155,9 +160,83 @@ function setupUnitEventHandlers() {
     document.getElementById("unit-table-rows").onclick = unitDetails;
 }
 
+//maybe fuck up
+// Function to display the Add Unit Modal
+async function displayAddUnitModal() {
+  const modal = document.getElementById("add-unit-modal");
 
+  const inputForm = `
+    <span class="close">&times;</span>
+    <label for="unit-number">Unit Number:</label>
+    <input type="text" id="unit-number" name="unit-number" required><br>
 
-function isMobile() {
+    <label for="unit-type">Type:</label>
+    <input type="text" id="unit-type" name="unit-type" required><br>
+
+    <label for="unit-location">Location:</label>
+    <select id="unit-location" name="unit-location" required></select><br>
+
+    <button id="create-unit-btn" class="button">Add Unit</button>
+  `;
+
+  modal.querySelector(".modal-content").innerHTML = inputForm;
+  modal.style.display = "block";
+
+  const closeBtn = modal.querySelector(".close");
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  // Fetch locations and populate the location dropdown
+  try {
+    const locations = await fetch(
+      `${API_URL}/locations`, // Adjust the endpoint accordingly
+      makeOptions("GET", null, true)
+    ).then(handleHttpErrors);
+    const locationDropdown = document.getElementById("unit-location");
+
+    locations.content.forEach((location) => {
+      const option = document.createElement("option");
+      option.value = location.id;
+      option.textContent = location.locationName;
+      locationDropdown.appendChild(option);
+    });
+  } catch (error) {
+    console.error(error);
+    // Handle fetch error if necessary
+  }
+
+  const createBtn = modal.querySelector("#create-unit-btn");
+  createBtn.addEventListener("click", async () => {
+    await addUnit();
+    modal.style.display = "none";
+    // Refresh or re-render the units page after adding a new unit
+    initUnits(); // Adjust this function call accordingly
+  });
+}
+
+// Function to add a new unit
+async function addUnit() {
+  const unitNumber = document.getElementById("unit-number").value;
+  const unitType = document.getElementById("unit-type").value;
+  const unitLocation = document.getElementById("unit-location").value;
+
+  const newUnit = {
+    unitNumber: unitNumber,
+    type: unitType,
+    location: unitLocation,
+    // Add other fields as needed
+  };
+
+  try {
+    await fetch(`${API_URL}/unit`, makeOptions("POST", newUnit, true)).then(handleHttpErrors);
+  } catch (error) {
+    console.error(error);
+    // Handle error if necessary
+  }
+}
+
+  function isMobile() {
     const regex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
     return regex.test(navigator.userAgent);
 }

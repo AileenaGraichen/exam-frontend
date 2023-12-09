@@ -185,7 +185,7 @@ async function displayAddTaskModal() {
     <label for="task-unit">Hus/Lejlighed:</label>
     <select id="task-unit" name="unit" required disabled></select><br>
 
-    <button id="create-task-btn">Opret</button>
+    <button id="create-task-btn" class="button">Opret</button>
   `;
 
   modal.querySelector(".modal-content").innerHTML = inputForm;

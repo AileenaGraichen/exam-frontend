@@ -17,7 +17,7 @@ export async function initManageAccounts() {
 }
 
 async function renderAccounts(retryCount = 0) {
-  const addButton = `<button id="add-account">Tilføj Bruger</button>`;
+  const addButton = `<button id="add-account" class="button">Tilføj Bruger</button>`;
   try {
     let accounts = await fetch(URL, makeOptions("GET", null, true)).then(
       handleHttpErrors
@@ -35,7 +35,7 @@ async function renderAccounts(retryCount = 0) {
         <div>
           <strong>Role:</strong> ${account.roleNames}
         </div>
-        <button id="account-manage_${account.userName}" type="button" class="btn btn-sm btn-primary">Manage</button>
+        <button id="account-manage_${account.userName}" type="button" class="button">Manage</button>
       </div>`;
       })
       .join("");
@@ -62,7 +62,7 @@ function displayAddAccountModal() {
           <option value="TECH">Tech</option>
           <option value="ADMIN">ADMIN</option>
         </select>
-  <button id="create-account-btn">Create Account</button>
+  <button id="create-account-btn" class="button">Create Account</button>
   <p class="error-message"></p>`;
 
   modal.querySelector(".modal-content").innerHTML = inputForm;
