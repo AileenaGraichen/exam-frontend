@@ -471,5 +471,9 @@ input:checked + .slider:before {
 #maintenance-tasks-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+}
+
+#maintenance-details-content .box {
+  margin: 1rem;
 }

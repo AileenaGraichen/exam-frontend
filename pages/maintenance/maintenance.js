@@ -74,6 +74,8 @@ async function renderMaintenancePage(retryCount = 0, searchValue = "") {
       clickedLocation = locationDropdown.value;
       fetchMaintenanceTasks(selectLocation);
     });
+    document.getElementById("maintenance-tasks-container").innerText =
+      "Vælg et feriested for at se opgaver";
   } catch (error) {
     console.error(error);
     handleFetchError(renderMaintenancePage, retryCount, contentDiv);
