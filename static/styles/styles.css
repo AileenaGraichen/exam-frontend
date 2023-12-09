@@ -2,11 +2,11 @@
 
 :root {
   --font-family: 'Noto Sans', sans-serif;
-  --background-color: rgb(245, 199, 167);
-  --complementary-color: rgb(251, 225, 201); /*boxes/elements*/
-  --primary-color: rgb(34, 26, 14); /*text*/
+  --background-color: #58727f;
+  --complementary-color: #d3a284; /*boxes/elements*/
+  --primary-color: #e5e5e5; /*text*/
   --secondary-color: rgb(49, 35, 6); /*subtext*/
-  --off-color: rgb(242, 166, 108); /*accent-color(button)*/
+  --off-color: #83afa6; /*accent-color(button)*/
   --box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
   --border: 1px solid rgba(255, 255, 255, 0.02);
   --border-radius: 10px;
@@ -26,19 +26,29 @@ body {
   background-color: var(--background-color);
 }
 
-h1 {
-  color: var(--primary-color);
-}
 
-h3{
+h1, h3, h4{
   color: var(--primary-color);
   font-family: var(--font-family);
   font-weight: bold;
 }
 
-p{
+h2{
+  color: var(--secondary-color);
+  font-family: var(--font-family);
+  font-weight: bold;
+}
+
+p, label{
   color: var(--primary-color);
   font-family: var(--font-family);
+}
+
+.navbar {
+  background-color: var(--primary-color);
+  box-shadow: var(--box-shadow);
+  border: var(--border);
+
 }
 
 .box{
@@ -64,6 +74,7 @@ p{
   box-shadow: var(--box-shadow);
   border: var(--border);
   border-radius: var(--border-radius);
+  padding: 2rem;
 }
 
 button {
@@ -72,12 +83,13 @@ button {
 }
 
 label {
-  color: var(--secondary-color);
+  color: var(--background-color);
+  font-family: var(--font-family);
 }
 
 .location-box {
   display: flex;
-  background-color: var(--complementary-color);
+  background-color: var(--primary-color);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   border: var(--border);
@@ -85,7 +97,6 @@ label {
   padding: 1rem;
   justify-content: center;
 }
-
 .pagination-outer {
   text-align: center;
 }
@@ -106,7 +117,7 @@ label {
 
 .pagination li a.page-link {
   color: var(--primary-color);
-  background-color: var(--complementary-color);
+  background-color: var(--off-color);
   font-size: 20px;
   text-align: center;
   line-height: 45px;
@@ -124,7 +135,7 @@ label {
 .pagination li.active a.page-link,
 .pagination li a.page-link:hover,
 .pagination li.active a.page-link:hover {
-  color: var(--secondary-color);
+  color: var(--background-color);
   border: none;
 }
 .pagination li:first-child a.page-link {
@@ -136,7 +147,7 @@ label {
 }
 .pagination li a.page-link:before {
   content: "";
-  background-color: var(--off-color);
+  background-color: var(--primary-color);
   height: 0;
   width: 100%;
   filter: blur(10px);
@@ -227,10 +238,11 @@ label {
 }
 
 .dashboard-item{
-  border-radius: var(--border-radius);
   padding: 5px 0 0 15px;
   cursor:pointer;
-  border: 1px solid green;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
   min-height: 300px;
   overflow:hidden;
 }
@@ -268,31 +280,34 @@ label {
   max-width:650px;
 }
 #donut-inner-text{
-  font-size:50px;
-  width:auto;
-  height:auto;
+  font-size: 1.7rem;
   position: absolute;
-  z-index:5000;
-  margin: -55% 0 0 35%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
+
 #task-box{
   grid-area:one;
   position: relative;
+  background-color: var(--complementary-color);
 }
 
 #cleaning-box{
   grid-area:two;
+  background-color: var(--complementary-color);
 }
 #overview-box{
- 
   grid-area:three;
+  background-color: var(--complementary-color);
 }
 #personel-box{
-  
   grid-area:four;
+  background-color: var(--complementary-color);
 }
 #owner-box{
   grid-area:five;
+  background-color: var(--complementary-color);
 }
 
 .dashboard-data-list{
@@ -300,7 +315,7 @@ label {
   border: var(--border);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  background-color: var(--complementary-color);
+  background-color: var(--primary-color);
   margin-bottom: 15px;  
 }
 
@@ -312,6 +327,12 @@ label {
   overflow: hidden; 
   white-space: nowrap;
 }
+/*
+.donut-text{
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}*/
 
 /* GRIIIIIID */
 .grid-container {
@@ -365,7 +386,7 @@ label {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #2196F3;
+  background-color: var(--off-color);
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -383,11 +404,11 @@ label {
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: var(--secondary-color);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: var(--box-shadow);
 }
 
 input:checked + .slider:before {
@@ -406,10 +427,15 @@ input:checked + .slider:before {
 }
 
 .cleanplan-box{
+  display: flex-column;
+  align-items: center;
+  justify-items: center;
   float:left;
   height:200px;
   width:200px;
-  border:1px solid black;
+  border:var(--border);
+  box-shadow: var(--box-shadow);
+  background-color: var(--complementary-color);
   border-radius: var(--border-radius);
   margin: 0 20px 20px 0px;
   overflow-wrap: break-word;
@@ -434,25 +460,46 @@ input:checked + .slider:before {
   border: 1px solid black;
 }
 
-
-
-/* CSS */
 .button {
   padding: 12px 26px;
-  color: var(--off-color);
+  color: var(--primary-color);
   border: 0;
   transition: all 150ms ease-in-out;
   font-family: var(--font-family);
   border-radius: 12px;
   box-shadow: rgba(255, 255, 255, 0.2) 0 1px 0 0 inset;
-  background-color: var(--primary-color);
+  background-color: var(--off-color);
   background-image: linear-gradient(180deg, rgba(206, 211, 234, 0.07) 0%, transparent 100%);
 }
 
 .button:hover {
-  filter: brightness(2.1);
+  filter: brightness(1.1);
 }
 
 .button:active {
-  transform: scale(.95);
+  transform: scale(1.25);
+}
+
+.user-box, .owner-box, .cleaner-box{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  width: 100%;
+  height: 100%;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  margin: 0 1rem 1rem 0px;
+  overflow-wrap: break-word;
+}
+
+input {
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: var(--primary-color);
+  color: var(--background-color );
 }

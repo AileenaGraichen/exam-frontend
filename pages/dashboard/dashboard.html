@@ -1,13 +1,14 @@
 <div class="template">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <h1>Dashboard</h1>
-    <p id="welcome-text"></p>
+    <h3 id="welcome-text"></h3>
     <div id="dashboard-grid">
         <div class="dashboard-item box" id="task-box">
             <h2>Opgaver</h2>
             <canvas id="myChart"></canvas>
-            <h4 id="donut-inner-text"></h4>
+            <div class="donut-text">
+                <h4 id="donut-inner-text"></h4>
+            </div>
         </div>
     
         <div class="dashboard-item box" id="cleaning-box">
@@ -28,7 +29,6 @@
         <div class="dashboard-item box" id="owner-box">
             <h2>Ejere</h2>
             <div id="owner-data-box"></div>
-
         </div>
     </div>
 </div>
