@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
 
 :root {
-  --font-family: 'Noto Sans', sans-serif;
+  --font-family: "Noto Sans", sans-serif;
   --background-color: #58727f;
-  --complementary-color:  #d3a284; /*boxes/elements  #d3a284*/
+  --complementary-color: #d3a284; /*boxes/elements  #d3a284*/
   --primary-color: #e5e5e5; /*text*/
   --secondary-color: rgb(49, 35, 6); /*subtext*/
   --off-color: #83afa6; /*accent-color(button)*/
@@ -26,19 +26,22 @@ body {
   background-color: var(--background-color);
 }
 
-h1{
+h1 {
   color: var(--primary-color);
   font-family: var(--font-family);
   font-weight: bold;
 }
 
-h2, h3, h4{
+h2,
+h3,
+h4 {
   color: var(--secondary-color);
   font-family: var(--font-family);
   font-weight: bold;
 }
 
-p, label{
+p,
+label {
   color: var(--background-color);
   font-family: var(--font-family);
 }
@@ -232,9 +235,9 @@ label {
     "four five three";
 }
 
-.dashboard-item{
+.dashboard-item {
   padding: 5px 0 0 15px;
-  cursor:pointer;
+  cursor: pointer;
   border: var(--border);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
@@ -268,7 +271,7 @@ label {
       "four"
       "five";
   }
-  #overview-box{
+  #overview-box {
     overflow: scroll;
   }
 }
@@ -278,7 +281,7 @@ label {
   max-width: 650px;
 }
 
-#donut-inner-text{
+#donut-inner-text {
   font-size: 1.7rem;
   position: absolute;
   top: 50%;
@@ -286,27 +289,26 @@ label {
   transform: translate(-50%, -50%);
 }
 
-#task-box{
-  grid-area:one;
+#task-box {
+  grid-area: one;
   position: relative;
   background-color: var(--complementary-color);
 }
 
-
-#cleaning-box{
-  grid-area:two;
+#cleaning-box {
+  grid-area: two;
   background-color: var(--complementary-color);
 }
-#overview-box{
-  grid-area:three;
+#overview-box {
+  grid-area: three;
   background-color: var(--complementary-color);
 }
-#personel-box{
-  grid-area:four;
+#personel-box {
+  grid-area: four;
   background-color: var(--complementary-color);
 }
-#owner-box{
-  grid-area:five;
+#owner-box {
+  grid-area: five;
   background-color: var(--complementary-color);
 }
 
@@ -316,7 +318,7 @@ label {
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   background-color: var(--primary-color);
-  margin-bottom: 15px;  
+  margin-bottom: 15px;
 }
 
 .dashboard-data-list:first-child {
@@ -387,8 +389,8 @@ label {
   right: 0;
   bottom: 0;
   background-color: var(--off-color);
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -426,14 +428,14 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-.cleanplan-box{
+.cleanplan-box {
   display: flex-column;
   align-items: center;
   justify-items: center;
-  float:left;
-  height:200px;
-  width:200px;
-  border:var(--border);
+  float: left;
+  height: 200px;
+  width: 200px;
+  border: var(--border);
   box-shadow: var(--box-shadow);
   background-color: var(--complementary-color);
   border-radius: var(--border-radius);
@@ -469,7 +471,11 @@ input:checked + .slider:before {
   border-radius: 12px;
   box-shadow: rgba(255, 255, 255, 0.2) 0 1px 0 0 inset;
   background-color: var(--off-color);
-  background-image: linear-gradient(180deg, rgba(206, 211, 234, 0.07) 0%, transparent 100%);
+  background-image: linear-gradient(
+    180deg,
+    rgba(206, 211, 234, 0.07) 0%,
+    transparent 100%
+  );
 }
 
 .button:hover {
@@ -480,11 +486,13 @@ input:checked + .slider:before {
   transform: scale(1.25);
 }
 
-.user-box, .owner-box, .cleaner-box{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+.user-box,
+.owner-box,
+.cleaner-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
   border: var(--border);
@@ -501,5 +509,27 @@ input {
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   background-color: var(--primary-color);
-  color: var(--background-color );
+  color: var(--background-color);
+}
+
+/* MAINTENANCE */
+.card img {
+  object-fit: cover;
+  height: 200px;
+}
+
+.card {
+  margin: 2rem;
+  max-width: 15rem;
+  min-width: 15rem;
+}
+
+#maintenance-tasks-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+#maintenance-details-content .box {
+  margin: 1rem;
 }
