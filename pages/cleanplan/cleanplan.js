@@ -166,13 +166,13 @@ async function submitCleaningPlanChanges(){
         const postList = currentCleaningPlan.map(unit => ({
             unitId: unit.id,
             userName: chosenUser,
-            date: formattedDate
+            date: chosenDate
         }));
         
         const deleteList = availableUnitsList.map(unit => ({
             unitId: unit.id,
             userName: chosenUser,
-            date: forma
+            date: chosenDate
         }));
         console.log(postList)
         console.log(deleteList)
