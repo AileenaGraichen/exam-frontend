@@ -3,12 +3,14 @@ import { API_URL } from "../../settings.js";
 
 const URL = API_URL + "/location";
 
+let locationRawData;
 
 let pageSize = 5;
 let sortColumn = "locationName";
 let sortDirection = "asc";
 let queryString;
 let isInitialized = false;
+let modal;
 export let clickedLocation;
 
 export function initLocations() {
@@ -21,9 +23,127 @@ export function initLocations() {
       .querySelector("#pagination")
       .addEventListener("click", handlePaginationClick);
   }
-
+  modal = document.getElementById("location-modal")
+  document.getElementById("add-location-open-btn").addEventListener("click", openAddLocationModal)
+  document.getElementById("edit-location-open-btn").addEventListener("click", openEditLocationModal)
   fetchLocations(Number(page));
 }
+
+function openAddLocationModal(){
+  const addLocationContent = `
+  <span class="close">&times;</span>
+  <h3>Tilføj Nyt Feriested</h3>
+  <label for="new-location-name">Feriested Navn</label>
+  <input id="new-location-name" type="text" placeholder="F.eks. Dueodde, Bageriet...">
+  <br>
+  <label for="new-location-address">Indtast Adresse</label>
+  <input id="new-location-address" type="text" placeholder="F.eks. Kystvejen, 3770 Allinge">
+  <br>
+  <button id="add-location-submit" class="button">Opret Feriested</button>
+  `
+  document.querySelector(".modal-content").innerHTML = addLocationContent
+  const closeBtn = document.querySelector(".close");
+    closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+    })
+  document.getElementById("add-location-submit").addEventListener("click", submitAddLocation)
+  document.getElementById("location-modal").style.display = "block";
+}
+function openEditLocationModal(){
+  const editLocationContent = `
+  <span class="close">&times;</span>
+  <h3>Rediger Feriested</h3>
+  <select id="select-location-to-edit" >
+  <option disabled selected value> -- Vælg Feriested -- </option>
+  </select>
+  <input id="edit-location-id" type="hidden">
+  <label for="edit-location-name">Rediger Navn</label>
+  <input id="edit-location-name" disabled>
+  <label for="edit-location-address">Rediger Adresse</label>
+  <input id="edit-location-address" disabled>
+  <br>
+  <button id="edit-location-submit" class="button" disabled>Gem Ændringer</button>
+  <br>
+  <button id="delete-location-submit" class="button" disabled>Slet Feriested</button>
+  `
+  document.querySelector(".modal-content").innerHTML = editLocationContent;
+  const closeBtn = document.querySelector(".close");
+    closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+    })
+  setupLocationSelectList();
+  document.getElementById("edit-location-submit").addEventListener("click", submitEditLocation)
+  document.getElementById("delete-location-submit").addEventListener("click", submitDeleteLocation)
+  document.getElementById("location-modal").style.display = "block";
+}
+
+function setupLocationSelectList(){
+    const editSelectTag = document.getElementById("select-location-to-edit")
+    editSelectTag.addEventListener("change", findLocationToEdit)
+    const optionData = locationRawData.map(location => `
+    <option id="${location.id}" value="${location.id}">${location.locationName}</option>
+    `).join('')
+
+    editSelectTag.innerHTML += optionData;
+
+}
+
+function findLocationToEdit(){
+  const editIdField = document.getElementById("edit-location-id")
+  const editNameField = document.getElementById("edit-location-name")
+  const editAddressField = document.getElementById("edit-location-address")
+  
+  //Get option value from editSelectTag and get location date by name chosen.
+  let selectedLocation = document.getElementById("select-location-to-edit").value;
+  const location = locationRawData.filter(location => location.id == selectedLocation)
+  editIdField.value = location[0].id
+  editNameField.value = location[0].locationName
+  editAddressField.value = location[0].address
+
+  editNameField.disabled = false;
+  editAddressField.disabled = false;
+  document.getElementById("edit-location-submit").disabled = false;
+  document.getElementById("delete-location-submit").disabled = false;
+}
+
+async function submitAddLocation(){
+  const newName = document.getElementById("new-location-name").value
+  const newAddress = document.getElementById("new-location-address").value 
+
+  const body = {
+    locationName : newName,
+    address : newAddress
+  }
+  const res = await fetch(URL, makeOptions("POST", body, true)).then(handleHttpErrors)
+  modal.style.display = "none";  
+  fetchLocations()
+}
+
+async function submitEditLocation(){
+const editedId = document.getElementById("edit-location-id")
+const editedName = document.getElementById("edit-location-name")
+const editedAddress = document.getElementById("edit-location-address")
+
+const body = {
+  locationName : editedName.value,
+  address : editedAddress.value
+}
+  const res = await fetch(`${URL}/${editedId.value}`,makeOptions("PATCH", body, true)).then(handleHttpErrors)
+  modal.style.display = "none"
+  fetchLocations()
+}
+
+async function submitDeleteLocation(){
+  const editedId = document.getElementById("edit-location-id")
+  try {
+    await fetch(`${URL}/${editedId.value}`, makeOptions("DELETE", null, true)).then(handleHttpErrors)
+  } catch (error) {
+      alert("Kan ikke slette feriesteder, som har eksisterende boliger")
+  }
+  modal.style.display = "none"
+  fetchLocations()
+}
+
 
 async function fetchLocations(page = 0) {
   let data;
@@ -34,25 +154,23 @@ async function fetchLocations(page = 0) {
 
       data = await fetch(
         `${URL}?size=100`,
-        makeOptions("GET", null, false)
+        makeOptions("GET", null, true)
       ).then(handleHttpErrors);
       displayData(data.content);
+      document.getElementById("pagination").style.display = "none";
+      locationRawData = data.content;
     } else {
       console.log("Desktop device detected");
 
       queryString = `?page=${page}&size=${size}&sort=${sortColumn},${sortDirection}`;
-      data = await fetch(`${URL}${queryString}`).then(handleHttpErrors);
+      data = await fetch(`${URL}${queryString}`, makeOptions("GET", null, true)).then(handleHttpErrors);
       displayData(data.content);
       displayPagination(data.totalPages, page);
-
-      // Check if it's a wide screen or desktop
-      if (window.innerWidth >= 1024) {
-        document.getElementById("pagination").style.display = "flex";
-      } else {
-        document.getElementById("pagination").style.display = "none";
-      }
+      document.getElementById("pagination").style.display = "flex";
+      const allData = await fetch(`${URL}?size=100`, makeOptions("GET", null, true)).then(handleHttpErrors)
+      locationRawData = allData.content;
     }
-
+    
     setupLocationEventHandlers();
   } catch (error) {
     console.error(error);
@@ -122,7 +240,7 @@ function setupLocationEventHandlers() {
       const id = target.id.replace("location_", "");
       clickedLocation = id;
       console.log(clickedLocation);
-      window.router.navigate(`/unit?locationId=${clickedLocation}`);
+      window.router.navigate(`unit?locationId=${clickedLocation}`);
     });
   }
 }

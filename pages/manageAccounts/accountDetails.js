@@ -36,11 +36,11 @@ async function fetchAndRenderAccountDetails(username, retryCount = 0) {
               <p class="account-roles">${account.roleNames}</p>
           </div>    
           <div class="account-details-manage">
-              <button class="btn" id="account-manage_update_${username}">Update Email</button>
-              <button class="btn" id="account-manage_delete_${username}">Delete</button>
-              <button class="btn" id="account-manage_password_${username}">Change Password</button>
-              <button class="btn" id="account-manage_add-role_${username}">Add Role</button>
-              <button class="btn" id="account-manage_remove-role_${username}">Remove Role</button>
+              <button class="button" id="account-manage_update_${username}">Update Email</button>
+              <button class="button" id="account-manage_delete_${username}">Delete</button>
+              <button class="button" id="account-manage_password_${username}">Change Password</button>
+              <button class="button" id="account-manage_add-role_${username}">Add Role</button>
+              <button class="button" id="account-manage_remove-role_${username}">Remove Role</button>
           </div>
       </div>`;
 
@@ -90,7 +90,7 @@ function displayUpdateModal(username) {
   const modalInnerHTML = `<span class="close">&times;</span>
         <label for="account-input-email_${username}">Email:</label>
         <input type="text" id="account-input-email_${username}" value="${account.email}" required>
-        <button class="btn" id="update-account-btn_${username}">Update</button>
+        <button class="button" id="update-account-btn_${username}">Update</button>
       `;
 
   modal.querySelector(".modal-content").innerHTML = modalInnerHTML;
@@ -157,7 +157,7 @@ function displayAddRoleModal(username) {
           <option value="TECH">Tech</option>
           <option value="ADMIN">ADMIN</option>
         </select>
-        <button class="btn" id="add-role-account-btn_${username}">Add Role</button>
+        <button class="button" id="add-role-account-btn_${username}">Add Role</button>
         <p class="error-message"></p>
       `;
 
@@ -212,7 +212,7 @@ function displayRemoveRoleModal(username) {
           <option value="TECH">Tech</option>
           <option value="ADMIN">ADMIN</option>
         </select>
-        <button class="btn" id="remove-role-account-btn_${username}">Remove Role</button>
+        <button class="button" id="remove-role-account-btn_${username}">Remove Role</button>
         <p class="error-message"></p>
       `;
 
@@ -265,7 +265,7 @@ function displayUpdatePasswordModal(username) {
         <input type="text" id="account-input-password_${username}" required>
         <label for="account-input-verify-password_${username}">Verify Password:</label>
         <input type="text" id="account-input-verify-password_${username}" required>
-        <button class="btn" id="update-password-account-btn_${username}">Update Password</button>
+        <button class="button" id="update-password-account-btn_${username}">Update Password</button>
         <p class="error-message"></p>
       `;
 

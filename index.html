@@ -22,7 +22,7 @@
   </head>
   <body>
     <nav
-      class="navbar navbar-expand-lg navbar-dark bg-dark"
+      class="navbar navbar-expand-lg navbar-light"
       style="font-size: larger"
     >
       <div class="container-fluid">
@@ -50,24 +50,20 @@
               <a class="nav-link" href="/login" data-navigo>Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/accounts" data-navigo>Accounts</a>
+              <a class="nav-link admin-only" href="/accounts" data-navigo style="display:none;">Accounts</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/owners" data-navigo>Owners</a>
+              <a class="nav-link admin-only" href="/owners" data-navigo style="display:none;">Owners</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/location" data-navigo>Locations</a>
+              <a class="nav-link admin-only" href="/location" data-navigo style="display:none;">Locations</a>
             </li>
             <li class="nav-item">
-
-              <a class="nav-link" href="/maintenance" data-navigo
-                >Maintenance</a
-              >
+              <a class="nav-link admin-only tech-only" href="/maintenance" data-navigo style="display:none;">Maintenance</a>
             </li>
-
-              <a class="nav-link" href="/cleanplan" data-navigo>Rengøring</a>
+            <li class="nav-item">
+              <a class="nav-link admin-only clean-only" href="/cleanplan" data-navigo style="display:none;">Rengøring</a>
             </li>
-       
           </ul>
         </div>
       </div>
