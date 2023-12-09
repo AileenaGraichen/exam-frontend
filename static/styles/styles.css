@@ -47,17 +47,16 @@ p, label{
   background-color: var(--primary-color);
   box-shadow: var(--box-shadow);
   border: var(--border);
-
 }
 
-.box{
+.box {
   background-color: var(--complementary-color);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   border: var(--border);
 }
 
-#hero{
+#hero {
   margin: -8rem;
 }
 
@@ -216,22 +215,21 @@ label {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50)
+  transform: translate(-50%, -50);
 }
 
-
 /*---------DASHBOARD--------*/
-#dashboard-grid{
-  display:grid;
-  grid-column-gap:40px;
-  grid-row-gap:20px;
-  width:90vw;
-  height:90vh;
+#dashboard-grid {
+  display: grid;
+  grid-column-gap: 40px;
+  grid-row-gap: 20px;
+  width: 90vw;
+  height: 90vh;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
   grid-template-areas:
-  "one two three"
-  "four five three"
+    "one two three"
+    "four five three";
 }
 
 .dashboard-item{
@@ -241,44 +239,45 @@ label {
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   min-height: 300px;
-  overflow:hidden;
+  overflow: hidden;
 }
 
-@media(max-width:1500px){
-  #dashboard-grid{
-    width:1200px;
+@media (max-width: 1500px) {
+  #dashboard-grid {
+    width: 1200px;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(4, 1fr);
     grid-template-areas:
-    "one two"
-    "four three"
-    "four three"
-    "five five"
+      "one two"
+      "four three"
+      "four three"
+      "five five";
   }
 }
-@media(max-width:1200px){
-  #dashboard-grid{
-    max-width:900px;
-    width:auto;
+@media (max-width: 1200px) {
+  #dashboard-grid {
+    max-width: 900px;
+    width: auto;
     grid-template-columns: auto;
     grid-template-rows: repeat(5, 1fr);
     grid-column-gap: 0;
     grid-template-areas:
-    "one"
-    "two"
-    "three"
-    "four"
-    "five"
+      "one"
+      "two"
+      "three"
+      "four"
+      "five";
   }
   #overview-box{
     overflow: scroll;
   }
 }
 
-#myChart{
+#myChart {
   width: 100%;
-  max-width:650px;
+  max-width: 650px;
 }
+
 #donut-inner-text{
   font-size: 1.7rem;
   position: absolute;
@@ -292,6 +291,7 @@ label {
   position: relative;
   background-color: var(--complementary-color);
 }
+
 
 #cleaning-box{
   grid-area:two;
@@ -310,8 +310,8 @@ label {
   background-color: var(--complementary-color);
 }
 
-.dashboard-data-list{
-  width:90%;
+.dashboard-data-list {
+  width: 90%;
   border: var(--border);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
@@ -319,12 +319,12 @@ label {
   margin-bottom: 15px;  
 }
 
-.dashboard-data-list:first-child{
-  margin-top:30px;
+.dashboard-data-list:first-child {
+  margin-top: 30px;
 }
-.dashboard-data-list h4{
+.dashboard-data-list h4 {
   text-overflow: ellipsis;
-  overflow: hidden; 
+  overflow: hidden;
   white-space: nowrap;
 }
 /*
@@ -358,7 +358,7 @@ label {
   .grid-container {
     grid-template-columns: 1fr; /* Single column on smaller screens */
   }
-  
+
   .box:nth-child(1),
   .box:nth-child(5),
   .box:nth-child(6) {
@@ -373,7 +373,7 @@ label {
   height: 34px;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -399,8 +399,8 @@ label {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
@@ -440,23 +440,23 @@ input:checked + .slider:before {
   margin: 0 20px 20px 0px;
   overflow-wrap: break-word;
 }
-#switch-button-text{
-  font-weight:700;
+#switch-button-text {
+  font-weight: 700;
 }
-#cleanplan-modal-flexbox{
-  display:flex;
+#cleanplan-modal-flexbox {
+  display: flex;
 }
-#cleanplan-modal-flexbox select{
+#cleanplan-modal-flexbox select {
   overflow-y: auto;
-  width:100%;
+  width: 100%;
 }
-#cleanplan-modal-flexbox button{
-  display:block;
+#cleanplan-modal-flexbox button {
+  display: block;
 }
 
-.cleanplan-column{
+.cleanplan-column {
   width: 300px;
-  height:500px;
+  height: 500px;
   border: 1px solid black;
 }
 

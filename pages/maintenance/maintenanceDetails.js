@@ -60,30 +60,35 @@ function generateMaintenanceDetailsHTML(task, location) {
     "div",
     "task-details-box-2",
     "box",
-    `<div>
+    `
         <h6>Titel</h6>
         <p>${task.title}</p>
         <h6>Beskrivelse</h6>
-        <p>${task.description}</p>
-    </div>
-    <div>
-        <h6>Status</h6>
-        <p>${task.status}</p>
-        <h6>Prioritet</h6>
-        <p>${task.priority}</p>
-        <h6>Tildelt</h6>
-        <p>${task.accountUsername ? task.accountUsername : "Ikke tildelt"}</p>
-    </div>`
+        <p>${task.description}</p>`
   );
+  const taskDetailsBox3 = createElementWithIdAndClassAndContent(
+    "div",
+    "task-details-box-3",
+    "box",
+    `
+    <h6>Status</h6>
+    <p>${task.status}</p>
+    <h6>Prioritet</h6>
+    <p>${task.priority}</p>
+    <h6>Tildelt</h6>
+    <p>${task.accountUsername ? task.accountUsername : "Ikke tildelt"}</p>
+`
+  );
+
   let imageElement;
   if (task.image) {
     imageElement = `<img src="data:${task.mimetype};base64,${task.image}" alt="">`;
   } else {
     imageElement = `<p>Intet billede vedlagt</p>`;
   }
-  const taskDetailsBox3 = createElementWithIdAndClassAndContent(
+  const taskDetailsBox4 = createElementWithIdAndClassAndContent(
     "div",
-    "task-details-box-3",
+    "task-details-box-4",
     "box",
     `<div>
         <h6>Billeder</h6>
@@ -92,18 +97,24 @@ function generateMaintenanceDetailsHTML(task, location) {
   );
 
   contentDiv.innerHTML = "";
-  appendChildren(contentDiv, taskDetailsBox1, taskDetailsBox2, taskDetailsBox3);
+  appendChildren(
+    contentDiv,
+    taskDetailsBox1,
+    taskDetailsBox2,
+    taskDetailsBox3,
+    taskDetailsBox4
+  );
 }
 
 function createElementWithIdAndClassAndContent(
   elementType,
   id,
-  className,
+  classN,
   content
 ) {
   const element = document.createElement(elementType);
   element.id = id;
-  element.class = className;
+  element.className = classN;
   element.innerHTML = content;
   return element;
 }
