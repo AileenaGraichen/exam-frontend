@@ -26,9 +26,7 @@ body {
   background-color: var(--background-color);
 }
 
-div{
-  color: var(--primary-color);
-}
+
 
 
 h1, h3, h4{
