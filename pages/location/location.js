@@ -240,7 +240,7 @@ function setupLocationEventHandlers() {
       const id = target.id.replace("location_", "");
       clickedLocation = id;
       console.log(clickedLocation);
-      window.router.navigate(`/unit?locationId=${clickedLocation}`);
+      window.router.navigate(`unit?locationId=${clickedLocation}`);
     });
   }
 }

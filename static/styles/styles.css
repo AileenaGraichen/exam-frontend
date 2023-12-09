@@ -26,23 +26,20 @@ body {
   background-color: var(--background-color);
 }
 
-
-
-
-h1, h3, h4{
+h1{
   color: var(--primary-color);
   font-family: var(--font-family);
   font-weight: bold;
 }
 
-h2{
+h2, h3, h4{
   color: var(--secondary-color);
   font-family: var(--font-family);
   font-weight: bold;
 }
 
 p, label{
-  color: var(--primary-color);
+  color: var(--background-color);
   font-family: var(--font-family);
 }
 
@@ -59,8 +56,6 @@ p, label{
   box-shadow: var(--box-shadow);
   border: var(--border);
 }
-
-/* TODO Find a better solution for margin -10*/
 
 #hero{
   margin: -8rem;
@@ -274,6 +269,9 @@ label {
     "three"
     "four"
     "five"
+  }
+  #overview-box{
+    overflow: scroll;
   }
 }
 
