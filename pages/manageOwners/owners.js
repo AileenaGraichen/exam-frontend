@@ -23,7 +23,7 @@ export async function initManageOwners() {
 }
 
 async function renderOwners(retryCount = 0, searchValue = "") {
-  const addButton = `<button id="add-owner">Tilføj Ejer</button>`;
+  const addButton = `<button id="add-owner" class="button">Tilføj Ejer</button>`;
   if (searchValue) {
     searchValue = "/search/" + searchValue;
   }
@@ -121,9 +121,9 @@ function closeModal(evt) {
 
 const generateOwnerHTML = (owner) => `
     <div class="owner-box">
-      <p class="owner-name">${owner.firstName} ${owner.lastName}</p>
+      <h3 class="owner-name">${owner.firstName} ${owner.lastName}</h3>
       <p class="owner-email">${owner.email}</p>
       <p class="owner-mobile">${owner.mobile}</p>
-      <button id="owner-details_${owner.id}">Details</button>
+      <button id="owner-details_${owner.id}" class="button">Detajler</button>
     </div>
   `;

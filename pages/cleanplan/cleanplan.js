@@ -52,7 +52,7 @@ function setupPlanData(plans){
     `<div class="cleanplan-box" id="clean_user_${plan.userName}_${plan.date}">
         <h3>${plan.date}</h3>
         <h4>${plan.userName}</h4>
-        <button class="cleanplan-open-button">Se Plan</button>
+        <button class="cleanplan-open-button button">Se Plan</button>
     </div>
     `).join('');
 }
@@ -67,7 +67,7 @@ function setupUnitData(units) {
             // Assuming you want to display the first date if available
             cleaningPlansInfo = `<h5>${unit.cleaningPlans[0].date}</h5>`;
             cleaningPlanDate = `${unit.cleaningPlans[0].date}`
-            cleaningButton = `<button class="cleanplan-open-button">Se Plan</button>`
+            cleaningButton = `<button class="cleanplan-open-button button">Se Plan</button>`
         }
         return `<div class="cleanplan-box" id="clean_unit_${unit.id}_${cleaningPlanDate}">
                     <h4>${unit.location.address} ${unit.unitNumber}</h4>
@@ -111,7 +111,7 @@ function addCleanplanModal(){
     document.getElementById("cleanplan-add-date-selector").addEventListener("change", addUsersToDropdown)
     const closeBtn = modal.querySelector(".close");
     closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
+        modal.style.display = "none";
     })
     document.getElementById("continue-add-button").addEventListener("click", editCleanPlan)
     modal.style.display = "block";

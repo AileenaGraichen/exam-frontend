@@ -15,7 +15,7 @@ export function initDashboard(){
 
 function setupLinks(){
     document.getElementById("task-box").addEventListener("click", () => {
-        window.router.navigate("/taskList")
+        window.router.navigate("/maintenance")
     })
     document.getElementById("cleaning-box").addEventListener("click", () => {
         window.router.navigate("/cleanplan")
@@ -24,7 +24,10 @@ function setupLinks(){
         window.router.navigate("/location")
     })
     document.getElementById("personel-box").addEventListener("click", () => {
-        window.router.navigate("/personel")
+        window.router.navigate("/accounts")
+    })
+    document.getElementById("owner-box").addEventListener("click", () => {
+        window.router.navigate("/owners")
     })
     
 }
@@ -32,34 +35,46 @@ async function setupData(userRoles){
     try {
         fetchTasks()
         fetchLocations()
-        //fetchCleanPlan()
-        //fetchPersonel()
+        fetchCleanPlan()
+        fetchPersonel()
+        fetchOwners()
     } catch (error) {
         console.error(error);
     }
 }
 
 
-function fetchTasks(){
-    // const activeChart = Chart.getChart("myChart")
-    // if(activeChart){
-    //     activeChart.destroy();
-    // }
+async function fetchTasks(){
+    let doneCounter = 0
+    let inProgressCounter = 0
+    let noStartCounter = 0
     
-    let yValues = [60, 12, 20]
+    try {
+        const data = await fetch(`${API_URL}/maintenance-task?size=1000`, makeOptions("GET", null, true)).then(handleHttpErrors)
+        data.content.map(task => {
+            if(task.status == "DONE"){
+                doneCounter++
+            } else if(task.status == "IN_PROGRESS"){
+                inProgressCounter++
+            }else if(task.status == "NOT_STARTED"){
+                noStartCounter++
+            }
+        })
+    } catch (error) {
+        
+    }
+
+    let yValues = [doneCounter, inProgressCounter, noStartCounter]
     let xValues = ["Færdige", "I gang", "Ikke startet"]
     const barColors = ["green","blue", "red"];
-    //fetch task data and put into "yValues" array before creating chart. Above is just temp data.
-    //Sørg for at dataen er returneret, inden der laves et chart. Så pas på med async kald der fortsætter inden data er modtaget. 
-    //Hent alle tasks, check status, og tæl op på 3 variabler for hver type status. Lig efter loopet værdierne ind i yValues. 
-
+    
     //Ud fra yValues, udregn % der er done. 
     calculateDoneTasks(yValues);
     createChart(xValues, yValues, barColors);
     
 }
 async function fetchLocations(){
-    let data = await fetch(`${API_URL}/location?size=10`, makeOptions("GET", null, false)).then(handleHttpErrors);
+    let data = await fetch(`${API_URL}/location?size=10`, makeOptions("GET", null, true)).then(handleHttpErrors);
     displayData(data.content);
 }
 function displayData(locations){
@@ -72,16 +87,33 @@ function displayData(locations){
 }
 
 async function fetchCleanPlan(){
-    //fetch call
-    //setupData and put into div
-    //document.getElementById("cleaning-data-box").innerHTML = cleanObjects;
+    const data = await fetch(`${API_URL}/cleaning/pageable?size=5`, makeOptions("GET", null, true)).then(handleHttpErrors)
+    const cleanObjects = data.content.map(plan => `
+    <div class="dashboard-data-list">${plan.date} - ${plan.userName}</div>
+    `).join('')
+    document.getElementById("cleaning-data-box").innerHTML = cleanObjects;
 
 }
 async function fetchPersonel(){
-    //fetch call
-    //setupData and put into div
-    //document.getElementById("personel-data-box").innerHTML = personelObjects;
+    const data = await fetch(`${API_URL}/user-with-role`, makeOptions("GET", null, true)).then(handleHttpErrors)
+    const filteredUsers = data.filter(user =>
+        user.roleNames.includes('CLEAN') || user.roleNames.includes('TECH')
+      ).slice(0, 5);
+    
+    const personelObjects = filteredUsers.map(user => `
+    <div class="dashboard-data-list">${user.userName} - ${user.email} - ${user.roleNames[0]}</div>
+    `).join('')
 
+    document.getElementById("personel-data-box").innerHTML = personelObjects;
+
+}
+
+async function fetchOwners(){
+    const data = await fetch(`${API_URL}/owner?size=5`, makeOptions("GET", null, true)).then(handleHttpErrors)
+    const ownerObjects = data.content.map(owner => `
+    <div class="dashboard-data-list">${owner.lastName}, ${owner.firstName} - ${owner.mobile}</div>
+    `).join('')
+    document.getElementById("owner-data-box").innerHTML = ownerObjects;
 }
 
 function calculateDoneTasks(yValues){

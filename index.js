@@ -3,7 +3,7 @@ import "https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js";
 import "./navigo_EditedByLars.js";
 
 import { setActiveLink, renderHtml, loadHtml } from "./utils.js";
-import { initLogin } from "./pages/login/login.js";
+import { initLogin, toggleLoginStatus } from "./pages/login/login.js";
 import { initLocations } from "./pages/location/location.js";
 import { initManageAccounts } from "./pages/manageAccounts/accounts.js";
 import { initAccountDetails } from "./pages/manageAccounts/accountDetails.js";
@@ -12,6 +12,7 @@ import { initOwnerDetails } from "./pages/manageOwners/ownerDetails.js";
 import { initUnits } from "./pages/manageUnits/units.js";
 import { initDashboard } from "./pages/dashboard/dashboard.js";
 import { initMaintenance } from "./pages/maintenance/maintenance.js";
+import { initMaintenanceDetails } from "./pages/maintenance/maintenanceDetails.js";
 import { initUnitDetails } from "./pages/manageUnits/unitDetails.js";
 import { initCleanplan } from "./pages/cleanplan/cleanplan.js";
 
@@ -34,13 +35,17 @@ window.addEventListener("load", async () => {
   const templateMaintenance = await loadHtml(
     "./pages/maintenance/maintenance.html"
   );
+  const templateMaintenanceDetails = await loadHtml(
+    "./pages/maintenance/maintenanceDetails.html"
+  );
   const templateUnitDetails = await loadHtml(
     "./pages/manageUnits/unitDetails.html"
   );
   const templateCleaningPlan = await loadHtml(
     "./pages/cleanplan/cleanplan.html"
   );
-
+  const token = localStorage.getItem("token")
+  toggleLoginStatus(token)
   const router = new Navigo("/", { hash: true });
   window.router = router;
   router
@@ -92,6 +97,10 @@ window.addEventListener("load", async () => {
       "/maintenance": () => {
         renderHtml(templateMaintenance, "content");
         initMaintenance();
+      },
+      "/maintenance-details": (match) => {
+        renderHtml(templateMaintenanceDetails, "content");
+        initMaintenanceDetails(match);
       },
       "/cleanplan": () => {
         renderHtml(templateCleaningPlan, "content");
