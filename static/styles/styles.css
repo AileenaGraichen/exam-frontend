@@ -3,7 +3,7 @@
 :root {
   --font-family: 'Noto Sans', sans-serif;
   --background-color: #58727f;
-  --complementary-color: #d3a284; /*boxes/elements*/
+  --complementary-color:  #d3a284; /*boxes/elements  #d3a284*/
   --primary-color: #e5e5e5; /*text*/
   --secondary-color: rgb(49, 35, 6); /*subtext*/
   --off-color: #83afa6; /*accent-color(button)*/
@@ -24,6 +24,10 @@ html {
 
 body {
   background-color: var(--background-color);
+}
+
+div{
+  color: var(--primary-color);
 }
 
 
