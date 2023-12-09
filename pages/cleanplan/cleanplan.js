@@ -280,7 +280,7 @@ function setupAvailableUnitsList(data){
     }
     availableUnitsList = []
     allUnits.map((unit) => {
-        if(unit.status == "AVAILABLE"){
+        if(unit.status != "AVAILABLE"){
             return availableUnitsList.push(unit);
         }
         return null;
