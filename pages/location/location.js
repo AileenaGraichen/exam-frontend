@@ -39,7 +39,7 @@ function openAddLocationModal(){
   <label for="new-location-address">Indtast Adresse</label>
   <input id="new-location-address" type="text" placeholder="F.eks. Kystvejen, 3770 Allinge">
   <br>
-  <button id="add-location-submit">Opret Feriested</button>
+  <button id="add-location-submit" class="button">Opret Feriested</button>
   `
   document.querySelector(".modal-content").innerHTML = addLocationContent
   const closeBtn = document.querySelector(".close");
@@ -62,9 +62,9 @@ function openEditLocationModal(){
   <label for="edit-location-address">Rediger Adresse</label>
   <input id="edit-location-address" disabled>
   <br>
-  <button id="edit-location-submit" disabled>Gem Ændringer</button>
+  <button id="edit-location-submit" class="button" disabled>Gem Ændringer</button>
   <br>
-  <button id="delete-location-submit" disabled>Slet Feriested</button>
+  <button id="delete-location-submit" class="button" disabled>Slet Feriested</button>
   `
   document.querySelector(".modal-content").innerHTML = editLocationContent;
   const closeBtn = document.querySelector(".close");
@@ -240,7 +240,7 @@ function setupLocationEventHandlers() {
       const id = target.id.replace("location_", "");
       clickedLocation = id;
       console.log(clickedLocation);
-      window.router.navigate(`/unit?locationId=${clickedLocation}`);
+      window.router.navigate(`unit?locationId=${clickedLocation}`);
     });
   }
 }

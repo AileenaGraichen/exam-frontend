@@ -17,7 +17,6 @@ let locationId;
 export async function initMaintenanceDetails(match) {
   if (match?.params?.task && match?.params?.location) {
     const id = match.params.task;
-    console.log(id);
     locationId = match.params.location;
     document.getElementById("maintenance-details-content").innerHTML =
       loadingContent;

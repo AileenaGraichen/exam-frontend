@@ -18,20 +18,14 @@ export function initUnitDetails(match) {
   document.getElementById("unit-details-content").onclick = manageUnit;
 }
 
-
 async function fetchAndRenderUnitDetails(unitId) {
   try {
 
       console.log('Fetching unit details...');
 
       unit = await fetch(`${URL}/oneunit/${unitId}`, makeOptions("GET", null, true)).then(handleHttpErrors);
-      console.log('Unit details:', unit); // Log the fetched unit data
-
-      // maybe fuck up
       const owner = await fetchOwnerDetails(unit.ownerId);
-      console.log('Owner details:', owner);
       const ownerFullName = `${owner.firstName} ${owner.lastName}`;
-      //maybe fuckup end
       const unitDetailsHTML = generateUnitDetailsHTML(unit, ownerFullName);
       document.getElementById("unit-details-content").innerHTML = unitDetailsHTML;
 
@@ -61,13 +55,15 @@ async function fetchOwnerDetails(ownerId) {
       const unitDetailsBox6 = document.getElementById("unit-details-box-6")
 //keycode
       unitDetailsBox1.innerHTML = `<h3 class="unit-location">${unit.location.locationName} ${unit.unitNumber}</h3>`
-
+      if(unit.image){
       unitDetailsBox2.innerHTML = `<img src="data:${unit.mimetype};base64,${unit.image}" alt="unit image">`;
-
+    }else{
+      unitDetailsBox2.innerHTML = `<img src="static/images/house.png" alt="unit image">`;
+    }
       unitDetailsBox3.innerHTML = `<h3>Addresse</h3><p class="unit-address"> ${unit.location.address} ${unit.unitNumber}</p>`
 
       unitDetailsBox4.innerHTML = `<h3>Info</h3><p class="unit-owner">Ejer: ${ownerFullName}</p>
-      <p class="unit-keyCode">Nøglekode: ${unit.keyCode}</p>`
+      <p class="unit-keyCode">Nøgle: ${unit.keyCode}</p>`
 
       unitDetailsBox5.innerHTML = unit.cleaningPlans.map((plan) => `
       <h3>Rengøringsplan</h3>
@@ -75,10 +71,11 @@ async function fetchOwnerDetails(ownerId) {
       .join("");
 
       unitDetailsBox6.innerHTML = unit.maintenanceTasks.map((task) => `
-      <p class="unit-maintenance-tasks-account">Cleaner: ${task.account.userName}</p>
+      <h3>To Do</h3>
+      <p class="unit-maintenance-tasks-account">Cleaner: ${task.accountUsername}</p>
       <p class="unit-maintenance-tasks-title">Titel: ${task.title}</p>
       <p class="unit-maintenance-tasks-description">Beskrivelse: ${task.description}</p>
-      <p class="unit-maintenance-tasks-priority">Prioritæt: ${task.priority}</p>
+      <p class="unit-maintenance-tasks-priority">Prioritet: ${task.priority}</p>
       <p class="unit-maintenance-tasks-status">Status: ${task.status}</p>`)
       .join("");
 
@@ -100,7 +97,6 @@ async function fetchOwnerDetails(ownerId) {
         </div>`;
     }
 
-    
     function setBorderColor(element, status) {
       console.log(status);
       switch (status) {
